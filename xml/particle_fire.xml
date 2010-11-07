@@ -1,0 +1,4 @@
+<regions>
+	<region x="0"  y="0" w="64" h="64"/> <!-- 64x64 Fire -->
+	<region x="64" y="0" w="64" h="64"/> <!-- 64x64 Fire 2 -->
+</regions>

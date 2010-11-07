@@ -1,0 +1,66 @@
+<regions>
+	<!-- Do not forget to update GUI.cs after modifying this. -->
+
+	<!-- Windows -->
+
+	<region x="0"  y="0"  w="16" h="16"/> <!-- Window Title Left -->
+	<region x="16" y="0"  w="16" h="16"/> <!-- Window Title Middle -->
+	<region x="32" y="0"  w="16" h="16"/> <!-- Window Title Right -->
+	<region x="48" y="0"  w="16" h="16"/> <!-- Window Caption Close -->
+	<region x="0"  y="16" w="16" h="16"/> <!-- Window Border Top Left -->
+	<region x="16" y="16" w="16" h="16"/> <!-- Window Border Top Middle -->
+	<region x="32" y="16" w="16" h="16"/> <!-- Window Border Top Right -->
+	<region x="0"  y="32" w="16" h="16"/> <!-- Window Border Middle Left -->
+	<region x="16" y="32" w="16" h="16"/> <!-- Window Body -->
+	<region x="32" y="32" w="16" h="16"/> <!-- Window Border Middle Right -->
+	<region x="0"  y="48" w="16" h="16"/> <!-- Window Border Bottom Left -->
+	<region x="16" y="48" w="16" h="16"/> <!-- Window Border Bottom Middle -->
+	<region x="32" y="48" w="16" h="16"/> <!-- Window Border Bottom Right -->
+
+	<!-- Buttons -->
+
+	<region x="0"  y="64" w="16" h="16"/> <!-- Depressed Button Left -->
+	<region x="16" y="64" w="16" h="16"/> <!-- Depressed Button Middle -->
+	<region x="32" y="64" w="16" h="16"/> <!-- Depressed Button Right -->
+
+	<region x="0"  y="80" w="16" h="16"/> <!-- Pressed Button Left -->
+	<region x="16" y="80" w="16" h="16"/> <!-- Pressed Button Middle -->
+	<region x="32" y="80" w="16" h="16"/> <!-- Pressed Button Right -->
+
+	<!-- Edit Box -->
+	<region x="0"  y="96" w="16" h="16"/> <!-- Edit Box Left -->
+	<region x="16" y="96" w="16" h="16"/> <!-- Edit Box Middle -->
+	<region x="32" y="96" w="16" h="16"/> <!-- Edit Box Right -->
+
+	<!-- Menus -->
+
+	<region x="64" y="0"  w="16" h="16"/> <!-- Menu Top Left -->
+	<region x="80" y="0"  w="16" h="16"/> <!-- Menu Top Middle -->
+	<region x="96" y="0"  w="16" h="16"/> <!-- Menu Top Right -->
+	<region x="64" y="16"  w="16" h="16"/> <!-- Menu Middle Left -->
+	<region x="80" y="16"  w="16" h="16"/> <!-- Menu Middle Middle -->
+	<region x="96" y="16"  w="16" h="16"/> <!-- Menu Middle Right -->
+	<region x="64" y="32"  w="16" h="16"/> <!-- Menu Seperator Left -->
+	<region x="80" y="32"  w="16" h="16"/> <!-- Menu Seperator Middle -->
+	<region x="96" y="32"  w="16" h="16"/> <!-- Menu Seperator Right -->
+	<region x="64" y="48"  w="16" h="16"/> <!-- Menu Bottom Left -->
+	<region x="80" y="48"  w="16" h="16"/> <!-- Menu Bottom Middle -->
+	<region x="96" y="48"  w="16" h="16"/> <!-- Menu Bottom Right -->
+
+	<!-- Check / Radio -->
+	<region x="48" y="16" w="16" h="16"/> <!-- Check Off -->
+	<region x="48" y="32" w="16" h="16"/> <!-- Check On -->
+	<region x="48" y="48" w="16" h="16"/> <!-- Radio Off -->
+	<region x="48" y="64" w="16" h="16"/> <!-- Radio On -->
+
+	<!-- Group Box -->
+	<region x="64" y="64" w="16" h="16"/> <!-- Group Box Top Left -->
+	<region x="80" y="64" w="16" h="16"/> <!-- Group Box Top Middle -->
+	<region x="92" y="64" w="16" h="16"/> <!-- Group Box Top Right -->
+	<region x="64" y="80" w="16" h="16"/> <!-- Group Box Middle Left -->
+	<region x="80" y="80" w="16" h="16"/> <!-- Group Box Body -->
+	<region x="92" y="80" w="16" h="16"/> <!-- Group Box Middle Right -->
+	<region x="64" y="92" w="16" h="16"/> <!-- Group Box Bottom Left -->
+	<region x="80" y="92" w="16" h="16"/> <!-- Group Box Bottom Middle -->
+	<region x="92" y="92" w="16" h="16"/> <!-- Group Box Bottom Right -->
+</regions>
