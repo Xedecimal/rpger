@@ -36,7 +36,7 @@ public class WEditBox extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseDown(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
 		if (buttons == 1) return ClickResponse.Focus;
 		return ClickResponse.None;

@@ -30,7 +30,6 @@ public class Interface
 	private static int m_fntBase;
 	private static Texture m_texFont;
 
-	private int m_primary;
 	private RegionSet m_rsMap;
 
 	/** View offset, for dynamic camera movement around a fixed point
@@ -125,9 +124,9 @@ public class Interface
 		{
 			Display.update();
 			Engine.Update();
-			Display.sync(60);
 
 			if (Display.isCloseRequested()) Engine.Running = false;
+
 			//Display.sync(30);
 			/*Sdl.SDL_PollEvent(out msg);
 			if (msg.type == Sdl.SDL_QUIT) { Quit(); break; }
@@ -258,22 +257,18 @@ public class Interface
 		BufferedReader br = new BufferedReader(new StringReader(text));
 		String buf = null;
 		try {
-			buf = br.readLine();
+			while ((buf = br.readLine()) != null)
+			{
+				ByteBuffer bb = ByteBuffer.allocateDirect(buf.length());
+				bb.put(Charset.forName("UTF-8").encode(buf));
+				bb.rewind();
+				GL11.glCallLists(bb);
+				GL11.glTranslated(-buf.length()*8, 16, 0);
+			}
 		} catch (IOException ex) {
 			Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		while (buf != null)
-		{
-			ByteBuffer bb = ByteBuffer.allocateDirect(buf.length());
-			bb.put(Charset.forName("UTF-8").encode(buf));
-			GL11.glCallLists(bb);
-			GL11.glTranslated(-buf.length()*8, 16, 0);
-			try {
-				buf = br.readLine();
-			} catch (IOException ex) {
-				Logger.getLogger(Interface.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
+
 		GL11.glPopMatrix();
 	}
 

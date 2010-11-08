@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package sdk.gui;
 
 import java.util.ArrayList;
@@ -30,7 +25,7 @@ public class WMenuItem extends TextWidget
 
 	public WMenuItem get(int ix) { return Items.get(ix); }
 
-	//public event ClickHandler OnClick;
+	public ClickHandler OnClick;
 
 	public WMenuItem(String text)
 	{
@@ -47,7 +42,7 @@ public class WMenuItem extends TextWidget
 	public WMenuItem(String text, ClickHandler handler)
 	{
 		this(text);
-		//OnClick += handler;
+		OnClick = handler;
 	}
 
 	public void AddItem(WMenuItem m)
@@ -145,7 +140,7 @@ public class WMenuItem extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseDown(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
 		if (yp > 16) //Clicked on subitem
 		{
@@ -154,12 +149,12 @@ public class WMenuItem extends TextWidget
 			return ret;
 		}
 		else Toggle(); //Clicked on actual menu.
-		//@TODO Fix me
-		/*if (OnClick != null)
+
+		if (OnClick != null)
 		{
-			OnClick(this, true);
+			OnClick.onClick(this, true);
 			return ClickResponse.Close;
-		}*/
+		}
 		return ClickResponse.Focus;
 	}
 

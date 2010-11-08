@@ -72,7 +72,7 @@ public class Widget extends Rect
 	 * @return A ClickResponse class containing the information of how this
 	 * widget reacted.
 	 */
-	public ClickResponse MouseDown(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
 		return ClickResponse.None;
 	}
@@ -86,7 +86,7 @@ public class Widget extends Rect
 	 * @param buttons The button(s) that are currently pressed.
 	 * @return An entry from ClickResponse.
 	 */
-	public ClickResponse MouseUp(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseUp(Object sender, int xp, int yp, int buttons)
 	{
 		return ClickResponse.None;
 	}

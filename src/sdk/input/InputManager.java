@@ -1,16 +1,14 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package sdk.input;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.w3c.dom.Document;
 import sdk.ActionKey;
 import sdk.Engine;
 import sdk.types.Direction;
+import sdk.world.Tile;
 
 /**
  *
@@ -18,6 +16,13 @@ import sdk.types.Direction;
  */
 public class InputManager
 {
+	public static final int MB_NONE = -1;
+	public static final int MB_LEFT = 0;
+	public static final int MB_RIGHT = 1;
+	public static final int MB_MIDDLE = 2;
+	public static final int MB_WUP = 3;
+	public static final int MB_WDN = 4;
+
 	public ArrayList<Integer> PressedKeys;
 	private HashMap<Integer, ActionKey> Actions;
 	/**
@@ -83,6 +88,35 @@ public class InputManager
 
 	public void Update()
 	{
+		while (Keyboard.next())
+		{
+			int key = Keyboard.getEventKey();
+			if (Keyboard.getEventKeyState());
+		}
+
+		while (Mouse.next())
+		{
+			// Mouse Moved
+			if (Mouse.getDX() != 0 || Mouse.getDY() != 0)
+				OnMouseMove(Mouse.getX(), Engine.intMain.Height-Mouse.getY());
+
+			if (Mouse.getDWheel() != 0)
+				OnMouseWheel(Mouse.getDWheel());
+
+			// Button pressed.
+			if (Mouse.getEventButton() != -1)
+			{
+				if (Mouse.getEventButtonState())
+					OnMouseDown(Mouse.getX(),
+							Engine.intMain.Height-Mouse.getY(),
+							Mouse.getEventButton());
+				else
+					OnMouseUp(Mouse.getX(),
+							Engine.intMain.Height-Mouse.getY(),
+							Mouse.getEventButton());
+			}
+		}
+
 		/*for (int ix = PressedKeys.size() - 1; ix >= 0; ix--)
 		{
 			if (Actions.containsKey(PressedKeys.get(ix)))
@@ -93,100 +127,99 @@ public class InputManager
 		}*/
 	}
 
-	/*public void KeyDown(Sdl.SDL_KeyboardEvent e)
+	public void KeyDown(int key)
 	{
-		if (!PressedKeys.Contains(e.keysym.sym))
-		{
-			KeyPress(e);
-			PressedKeys.Add(e.keysym.sym);
-		}
+		KeyPress(key);
+		PressedKeys.add(key);
 	}
 
-	public void KeyUp(Sdl.SDL_KeyboardEvent e)
+	/*public void KeyUp(Sdl.SDL_KeyboardEvent e)
 	{
 		if (PressedKeys.Contains(e.keysym.sym))
 		{
 			PressedKeys.Remove(e.keysym.sym);
-			if (Actions.ContainsKey(e.keysym.sym)) Actions[e.keysym.sym].Handler(false);
+			if (Actions.ContainsKey(e.keysym.sym))
+				Actions[e.keysym.sym].Handler(false);
 		}
+	}*/
+
+	protected void KeyPress(int key)
+	{
+		if (Engine.guiMain.KeyPress(key)) return;
+		//if (Actions.containsKey(key))
+		//	Actions.get(key).Handler(true);
 	}
 
-	protected void KeyPress(Sdl.SDL_KeyboardEvent e)
+	public void OnMouseMove(int x, int y)
 	{
-		if (Engine.guiMain.KeyPress(e.keysym.sym)) return;
-		if (Actions.ContainsKey(e.keysym.sym)) Actions[e.keysym.sym].Handler(true);
-
-		//if (e.keysym.sym == 'i') Engine.araMain.Scroll(Direction.North);
-		//if (e.keysym.sym == 'k') Engine.araMain.Scroll(Direction.South);
-		//if (e.keysym.sym == 'j') Engine.araMain.Scroll(Direction.West);
-		//if (e.keysym.sym == 'l') Engine.araMain.Scroll(Direction.East);
-	}
-
-	public void OnMouseMove(Sdl.SDL_MouseMotionEvent mme)
-	{
-		MouseX = mme.x;
-		MouseY = mme.y;
+		MouseX = x;
+		MouseY = y;
 
 		if (Engine.araMain != null)
 		{
-			Engine.araMain.SetMarker(Engine.araMain.ScreenToArea(mme.x, mme.y));
+			Engine.araMain.SetMarker(Engine.araMain.ScreenToArea(x, y));
 		}
-		if (Engine.guiMain.MouseMove(mme.x, mme.y)) return;
+		if (Engine.guiMain.MouseMove(x, y)) return;
 	}
 
-	public void OnMouseDown(Sdl.SDL_MouseButtonEvent mbe)
+	public void OnMouseWheel(int w)
 	{
-		if (Buts[mbe.button]) return;
-		Buts[mbe.button] = true;
+	}
+
+	public void OnMouseDown(int x, int y, int button)
+	{
+		if (Buts[button]) return;
+		Buts[button] = true;
 
 		//GUI has priority.
-		if (Engine.guiMain.MouseDown(mbe.x, mbe.y, mbe.button)) return;
+		if (Engine.guiMain.MouseDown(x, y, button)) return;
 
 		if (Engine.araMain != null)
 		{
 			//Left Click
-			if (mbe.button == 1)
+			if (button == InputManager.MB_LEFT)
 			{
-				if (Engine.Player.Left != null) Engine.Player.Left.Use(mbe.x, mbe.y);
+				if (Engine.Player.Left != null) Engine.Player.Left.Use(x, y);
 			}
 
 			//Right Click
-			if (mbe.button == 3)
+			if (button == InputManager.MB_RIGHT)
 			{
-				if (Interface.EditMode)
+				//@TODO: Fix me.
+				/*if (Interface.EditMode)
 				{
 					WTileEdit wnd = new WTileEdit(mbe.x, mbe.y);
 					Engine.guiMain.Insert(0, wnd);
 				}
 				else if (Engine.araMain != null)
-				{
-					if (Engine.Player.Right != null) Engine.Player.Right.Use(mbe.x, mbe.y);
-				}
+				{*/
+					if (Engine.Player.Right != null) Engine.Player.Right.Use(x, y);
+				//}
 			}
 
 			//Wheel Up
-			if (mbe.button == 4)
+			if (button == InputManager.MB_WUP)
 			{
-				Tile t = Engine.intMain.ScreenToAreaTile(mbe.x, mbe.y);
+				Tile t = Engine.intMain.ScreenToAreaTile(x, y);
 				if (t != null)
 					t.Push(new Tile(Engine.araMain, t.ID, false));
 			}
 			//Wheel Down
-			if (mbe.button == 5)
+			if (button == InputManager.MB_WDN)
 			{
-				Tile t = Engine.intMain.ScreenToAreaTile(mbe.x, mbe.y);
+				Tile t = Engine.intMain.ScreenToAreaTile(x, y);
 				if (t != null)
 					t.Pop();
 			}
 		}
 	}
 
-	public void OnMouseUp(Sdl.SDL_MouseButtonEvent mbe)
+	public void OnMouseUp(int x, int y, int button)
 	{
-		if (!Buts[mbe.button]) return;
-		Buts[mbe.button] = false;
-		if (Engine.guiMain.MouseUp(mbe.x, mbe.y, mbe.button)) return;
-	}*/
+		if (!Buts[button]) return;
+		Buts[button] = false;
+		if (Engine.guiMain.MouseUp(x, y, button)) return;
+	}
 
 	private void Action_Move_Up(boolean down)
 	{

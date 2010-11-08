@@ -58,9 +58,10 @@ public class WMenu extends Widget
 	}
 
 	@Override
-	public ClickResponse MouseDown(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
-		if (buttons == 1)
+		// Left Button
+		if (buttons == 0)
 		{
 			Iterator<WMenuItem> i = m_items.iterator();
 			while (i.hasNext())

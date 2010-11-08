@@ -67,7 +67,7 @@ public class WListBox extends Widget
 	}
 
 	@Override
-	public ClickResponse MouseDown(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
 		if (buttons == 1)
 		{

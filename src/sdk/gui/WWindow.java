@@ -31,7 +31,7 @@ public class WWindow extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseDown(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
 		//Check for close button.
 		if (xp > right()-16 && xp < right() && yp > Y && yp < Y+16) return ClickResponse.Close;
@@ -52,7 +52,7 @@ public class WWindow extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseUp(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseUp(Object sender, int xp, int yp, int buttons)
 	{
 		if (m_focus != null) m_focus.MouseUp(this, xp, yp, buttons);
 		return super.MouseUp(sender, X, Y, buttons);

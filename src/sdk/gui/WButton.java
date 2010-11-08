@@ -56,7 +56,7 @@ public class WButton extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseDown(Object sender, int x, int y, byte buttons)
+	public ClickResponse MouseDown(Object sender, int x, int y, int buttons)
 	{
 		if (buttons == 1)
 		{
@@ -67,7 +67,7 @@ public class WButton extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseUp(Object sender, int x, int y, byte buttons)
+	public ClickResponse MouseUp(Object sender, int x, int y, int buttons)
 	{
 		if (buttons == 1 && this.ScreenRect().Contains(x, y))
 		{

@@ -23,21 +23,20 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	public boolean Dragging;
 	public Widget Focus;
 
-	/// <summary>
-	/// Use this to remove a specific widget, if you already have the widget
-	/// initialized and in your posession this is usually the easiest way to
-	/// go.
-	/// </summary>
-	/// <param name="w">The widget to remove.</param>
+	/**
+	 * Use this to remove a specific widget, if you already have the widget
+	 * initialized and in your posession this is usually the easiest way to go.
+	 * @param w The widget to remove.
+	 */
 	public void RemoveWidget(Widget w)
 	{
 		if (m_focus == w) Blur();
 		remove(w);
 	}
 
-	/// <summary>
-	/// Create a brand new GUI (aka window manager)
-	/// </summary>
+	/**
+	 * Create a brand new GUI (aka window manager)
+	 */
 	public GUI()
 	{
 		m_dragging = false;
@@ -55,17 +54,18 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 			li.previous().Render(RS);
 	}
 
-	/// <summary>
-	/// Called by the engine when the mouse is pressed.
-	/// </summary>
-	/// <param name="x"></param>
-	/// <param name="y"></param>
-	/// <param name="buttons"></param>
-	/// <returns></returns>
-	public boolean MouseDown(int x, int y, byte buttons)
+	/**
+	 * Called by the engine when the mouse is pressed.
+	 * @param x Horizontal mouse position.
+	 * @param y Vertical mouse position.
+	 * @param buttons Buttons currently pressed.
+	 * @return True if this event was consumed.
+	 */
+	public boolean MouseDown(int x, int y, int buttons)
 	{
-		if (Focus != null && !Focus.Contains(x, y)) Focus.Blur();
-		
+		if (Focus != null && !Focus.Contains(x, y))
+			Focus.Blur();
+
 		Iterator<Widget> i = this.iterator();
 		while (i.hasNext())
 		{
@@ -80,21 +80,24 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 				ClickResponse cr = w.MouseDown(this, x, y, buttons);
 				if (cr == ClickResponse.Close) { RemoveWidget(w); return true; }
 				else if (cr == ClickResponse.Drag) { Focus = w; m_dragging = true; }
-				else if (cr == ClickResponse.Focus) { Focus = w; }
+				else if (cr == ClickResponse.Focus)
+				{
+					Focus = w;
+				}
 				return true;
 			}
 		}
 		return false;
 	}
 
-	/// <summary>
-	/// Called by the engine when the mouse is depressed.
-	/// </summary>
-	/// <param name="xp">Horizontal position of mouse cursor.</param>
-	/// <param name="yp">Vertical position of mouse cursor.</param>
-	/// <param name="buttons">Current pressed buttons.</param>
-	/// <returns>True if this widget took the input.</returns>
-	public boolean MouseUp(int xp, int yp, byte buttons)
+	/**
+	 * Called by the engine when the mouse is depressed.
+	 * @param xp Horizontal position of mouse cursor.
+	 * @param yp Vertical position of mouse cursor.
+	 * @param buttons Current pressed buttons.
+	 * @return True if this widget took the input.
+	 */
+	public boolean MouseUp(int xp, int yp, int buttons)
 	{
 		m_dragging = false;
 		Iterator<Widget> i = iterator();
@@ -111,22 +114,21 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 		return false;
 	}
 
-	/// <summary>
-	/// Call the focused widget's blur method and set focus
-	/// to null.
-	/// </summary>
+	/**
+	 * Call the focused widget's blur method and set focus to null.
+	 */
 	public void Blur()
 	{
 		if (m_focus != null) m_focus.Blur();
 		m_focus = null;
 	}
 
-	/// <summary>
-	/// Handle general mouse movements.
-	/// </summary>
-	/// <param name="xp">Current horizontal point of the mouse.</param>
-	/// <param name="yp">Current vertical point of the mouse.</param>
-	/// <returns></returns>
+	/**
+	 * Handle general mouse movements.
+	 * @param xp Current horizontal point of the mouse.
+	 * @param yp Current vertical point of the mouse.
+	 * @return True if we consumed this event.
+	 */
 	public boolean MouseMove(int xp, int yp)
 	{
 		if (m_dragging) { m_focus.Offset(xp-lx, yp-ly); lx = xp; ly = yp; return true; }
@@ -140,11 +142,12 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 		return false;
 	}
 
-	/// <summary>
-	/// When a key is pressed, if a widget is focused, and can take input, then take it.
-	/// </summary>
-	/// <param name="key">The ASCII code of the key that was pressed</param>
-	/// <returns>True if the focused widget took the input.</returns>
+	/**
+	 * When a key is pressed, if a widget is focused, and can take input, then
+	 * take it.
+	 * @param key The ASCII code of the key that was pressed.
+	 * @return True if the focused widget took the input.
+	 */
 	public boolean KeyPress(int key)
 	{
 		if (m_focus != null) return m_focus.KeyPress(key);
@@ -167,12 +170,12 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 		return false;
 	}
 
-	/// <summary>
-	/// Display a custom little GUI messagebox.
-	/// </summary>
-	/// <param name="text">The text to display inside the messagebox.</param>
-	/// <returns>False always for now.</returns>
-	/// <todo>Make this return true if positive, false if negative hopefully.</todo>
+	/**
+	 * Display a custom little GUI messagebox.
+	 * @param text The text to display inside the messagebox.
+	 * @return False always for now.
+	 * @todo Make this return true if positive, false if negative hopefully.
+	 */
 	public boolean MessageBox(String text)
 	{
 		return MessageBox(text, "MessageBox");

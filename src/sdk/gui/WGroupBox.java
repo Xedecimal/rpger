@@ -26,7 +26,7 @@ public class WGroupBox extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseDown(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
 		Iterator<Widget> i = Widgets.iterator();
 		while (i.hasNext())
@@ -42,7 +42,7 @@ public class WGroupBox extends TextWidget
 	}
 
 	@Override
-	public ClickResponse MouseUp(Object sender, int xp, int yp, byte buttons)
+	public ClickResponse MouseUp(Object sender, int xp, int yp, int buttons)
 	{
 		if (m_focus != null) m_focus.MouseUp(this, xp, yp, buttons);
 		return super.MouseUp(sender, X, Y, buttons);

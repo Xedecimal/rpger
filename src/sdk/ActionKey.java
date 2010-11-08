@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package sdk;
 
 /**
@@ -19,4 +14,6 @@ public class ActionKey
 		Hold = hold;
 		//Handler = handler;
 	}
+
+	public void Handler() { }
 }
