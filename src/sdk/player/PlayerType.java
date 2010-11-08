@@ -1,4 +1,4 @@
-package sdk.types.player;
+package sdk.player;
 
 /**
  *

@@ -1,4 +1,4 @@
-package sdk.types.item;
+package sdk.item;
 
 import java.awt.Point;
 import sdk.Engine;

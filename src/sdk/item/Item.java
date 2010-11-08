@@ -3,11 +3,11 @@
  * and open the template in the editor.
  */
 
-package sdk.types.item;
+package sdk.item;
 
 import sdk.types.Entity;
 import sdk.types.Space;
-import sdk.types.player.Player;
+import sdk.player.Player;
 
 /**
  *

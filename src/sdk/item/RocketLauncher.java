@@ -1,4 +1,4 @@
-package sdk.types.item;
+package sdk.item;
 
 /**
  * Heat seeking missiles change angle incrementally.

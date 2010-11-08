@@ -1,4 +1,4 @@
-package sdk.types.item;
+package sdk.item;
 
 import sdk.types.Space;
 

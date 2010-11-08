@@ -10,7 +10,7 @@ import sdk.types.Interface;
 import sdk.types.RegionManager;
 import sdk.gui.GUI;
 import sdk.types.particle.ParticleEmitterCollection;
-import sdk.types.player.Player;
+import sdk.player.Player;
 import sdk.world.Area;
 
 /**

@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package sdk.types.item;
+package sdk.item;
 
 import java.awt.Point;
 import sdk.Engine;

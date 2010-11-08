@@ -1,4 +1,4 @@
-package sdk.types.player;
+package sdk.player;
 
 import java.util.EnumSet;
 import org.lwjgl.opengl.GL11;
@@ -10,7 +10,7 @@ import sdk.types.RectD;
 import sdk.types.RegionSet;
 import sdk.types.Space;
 import sdk.types.Vertex;
-import sdk.types.item.Item;
+import sdk.item.Item;
 
 /**
  *
