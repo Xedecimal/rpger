@@ -68,14 +68,12 @@ public class Player extends Entity
 		h = 64;
 		m_animspeed = 13;
 		vel = 140;
-		//vel = 1;
 		m_frame = 0;
 
 		ID = 0;
 		Name = name;
 		Type = type;
 		m_regname = "player";
-		//m_pos = new Core.RPointF();
 		Destination = new RPoint();
 		Dir = Entity.DIR_NONE;
 	}

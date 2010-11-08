@@ -3,9 +3,14 @@ package sdk.net;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.SocketChannel;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -20,8 +25,8 @@ import sdk.Config;
  */
 public class RPNetNode
 {
-	private ArrayList<Socket> m_sock_nodes;
-	private Socket m_sock_gateway;
+	private ArrayList<SocketChannel> m_sock_nodes;
+	private SocketChannel m_sc_gateway;
 	byte[] bin, cin;
 	String m_user, m_pass;
 	public int Port;
@@ -53,19 +58,29 @@ public class RPNetNode
 	}
 
 	//Browsing
-	public boolean Browse(String host, int port)
+
+	private Selector m_browse_sel;
+
+	public boolean Browse(String host, int port) throws IOException
 	{
 		bin = new byte[4096];
-		try
-		{
-			m_sock_gateway = new Socket(host, port);
-			input = new DataInputStream(m_sock_gateway.getInputStream());
-			output = new DataOutputStream(m_sock_gateway.getOutputStream());
-		} catch (UnknownHostException ex) {
-			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
-		} catch (IOException ex) {
-			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
-		}
+
+		m_browse_sel = Selector.open();
+		SocketChannel sc = SocketChannel.open();
+		sc.configureBlocking(false);
+		sc.register(m_browse_sel, sc.validOps());
+
+		if (!sc.connect(new InetSocketAddress(host, port)))
+			return false;
+
+		//m_sc_gateway = SocketChannel.open();
+		//m_sc_gateway.configureBlocking(false);
+		//m_sc_gateway.connect(new InetSOcketAddress(host, port));
+
+		//m_sock_gateway = new Socket(host, port);
+		//input = new DataInputStream(m_sock_gateway.getInputStream());
+		//output = new DataOutputStream(m_sock_gateway.getOutputStream());
+
 		return true;
 	}
 
@@ -97,8 +112,9 @@ public class RPNetNode
 		int port = Integer.parseInt(m.group(2));
 		String name = m.group(3);
 		try {
-			m_sock_gateway = new Socket(host, port);
-			DataInputStream dis = new DataInputStream(m_sock_gateway.getInputStream());
+			//@TODO: Finish this.
+			m_sc_gateway = SocketChannel.open();
+			//DataInputStream dis = new DataInputStream(m_sock_gateway.getInputStream());
 		} catch (UnknownHostException ex) {
 			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
 		} catch (IOException ex) {
@@ -209,16 +225,23 @@ public class RPNetNode
 
 	public void Update(int offx, int offy)
 	{
-		int a = 0;
-		try {
-			a = input.available();
-		} catch (IOException ex) {
-			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
+		if (m_browse_sel != null)
+		{
+			try {
+				m_browse_sel.select();
+			} catch (IOException ex) {
+				Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
 
-		if (a != 0)
+		Iterator<SelectionKey> it = m_browse_sel.selectedKeys().iterator();
+		while (it.hasNext())
 		{
-			System.out.println("Data available!");
+			SelectionKey sk = it.next();
+			if (sk.isReadable())
+			{
+				System.out.println("Data available!");
+			}
 		}
 	}
 

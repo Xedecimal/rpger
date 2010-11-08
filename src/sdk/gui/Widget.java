@@ -109,7 +109,7 @@ public class Widget extends Rect
 	 * @param key The ascii code of the key that was pressed.
 	 * @return Whether or not this widget took the input.
 	 */
-	public boolean KeyPress(int key) { return false; }
+	public boolean KeyPress(char key) { return false; }
 
 	/**
 	 * Responds to how this widget was affected to being blurred, or removed

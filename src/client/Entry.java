@@ -63,8 +63,6 @@ public class Entry
 		pe.Filters.add(new ParticleFilterRotate());
 		Engine.pecMain.add(pe);
 
-		Engine.guiMain.add(new WLogin());
-
 		//Script
 
 		SEM = new ScriptEngineManager();

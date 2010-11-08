@@ -14,7 +14,6 @@ import sdk.types.RegionSet;
  */
 public class GUI extends ArrayList<Widget> implements ClickHandler {
 	private boolean m_dragging;
-	private Widget m_focus;
 	private int lx, ly;
 
 	/** All the GUI regions from GUISet. */
@@ -30,7 +29,7 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	 */
 	public void RemoveWidget(Widget w)
 	{
-		if (m_focus == w) Blur();
+		if (Focus == w) Blur();
 		remove(w);
 	}
 
@@ -40,7 +39,7 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	public GUI()
 	{
 		m_dragging = false;
-		m_focus = null;
+		Focus = null;
 		RS = new RegionSet("GUISet");
 	}
 
@@ -79,7 +78,10 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 				}
 				ClickResponse cr = w.MouseDown(this, x, y, buttons);
 				if (cr == ClickResponse.Close) { RemoveWidget(w); return true; }
-				else if (cr == ClickResponse.Drag) { Focus = w; m_dragging = true; }
+				else if (cr == ClickResponse.Drag)
+				{
+					Focus = w; m_dragging = true;
+				}
 				else if (cr == ClickResponse.Focus)
 				{
 					Focus = w;
@@ -119,8 +121,8 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	 */
 	public void Blur()
 	{
-		if (m_focus != null) m_focus.Blur();
-		m_focus = null;
+		if (Focus != null) Focus.Blur();
+		Focus = null;
 	}
 
 	/**
@@ -131,9 +133,9 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	 */
 	public boolean MouseMove(int xp, int yp)
 	{
-		if (m_dragging && m_focus != null)
+		if (m_dragging && Focus != null)
 		{
-			m_focus.Offset(xp-lx, yp-ly); lx = xp; ly = yp; return true;
+			Focus.Offset(xp-lx, yp-ly); lx = xp; ly = yp; return true;
 		}
 		lx = xp; ly = yp;
 		Iterator<Widget> i = iterator();
@@ -151,9 +153,9 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	 * @param key The ASCII code of the key that was pressed.
 	 * @return True if the focused widget took the input.
 	 */
-	public boolean KeyPress(int key)
+	public boolean KeyPress(char key)
 	{
-		if (m_focus != null) return m_focus.KeyPress(key);
+		if (Focus != null) return Focus.KeyPress(key);
 		return false;
 	}
 
@@ -170,6 +172,7 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 		w.Add(new WLabel(new Rect(0, 0, 100, 100), text));
 		w.Add(new WButton(new Rect(0, 125, 50, 16), "OK", this));
 		add(0, w);
+		Blur();
 		return false;
 	}
 
@@ -190,7 +193,7 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	 * @param state Unknown.
 	 */
 	public void onClick(Object sender, boolean state) {
-		remove(m_focus);
-		m_focus = null;
+		remove(Focus);
+		Focus = null;
 	}
 }

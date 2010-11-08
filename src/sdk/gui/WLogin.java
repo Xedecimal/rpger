@@ -1,5 +1,8 @@
 package sdk.gui;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sdk.Engine;
 import sdk.net.RPNetNode.BrowseResultHandler;
 import sdk.types.Rect;
@@ -20,7 +23,7 @@ public class WLogin extends WWindow
 	public WLogin()
 	{
 		super(new Rect(-1, -1, 350, 380), "Login");
-		ebHost = new WEditBox(new Rect(120,   0,   200, 20), "192.168.0.23");
+		ebHost = new WEditBox(new Rect(120,   0,   200, 20), "192.168.1.150");
 		ebUser = new WEditBox(new Rect(120,   25,  200, 20), "Blank");
 		ebPass = new WEditBox(new Rect(120,   50,  200, 20), "", true);
 		lbServ = new WListBox(new Rect(0,     125, 300, 180));
@@ -42,10 +45,18 @@ public class WLogin extends WWindow
 
 	private class ButSearch implements ClickHandler
 	{
-		public void onClick(Object sender, boolean state) {
-			if (!Engine.netMain.Browse(ebHost.Text, 29838))
+		public void onClick(Object sender, boolean state)
+		{
+			try
 			{
-				Engine.guiMain.MessageBox("Error connecting,\ncheck the host.");
+				if (!Engine.netMain.Browse(ebHost.Text, 29838))
+				{
+					Engine.guiMain.MessageBox("Error connecting to browse server." + "\ncheck the host.");
+				}
+			}
+			catch (IOException ex)
+			{
+				Logger.getLogger(WLogin.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 	}

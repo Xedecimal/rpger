@@ -79,6 +79,7 @@ public class Area extends Space
 	{
 		this();
 		Map = new MapIsometric(this, 64, 64, wt, ht);
+		Map.generate();
 		Server = true;
 	}
 

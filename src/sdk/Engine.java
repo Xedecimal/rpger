@@ -1,6 +1,7 @@
 package sdk;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Calendar;
 import java.util.Random;
 import sdk.input.InputManager;
@@ -8,7 +9,6 @@ import sdk.types.GameState;
 import sdk.types.Interface;
 import sdk.types.RegionManager;
 import sdk.gui.GUI;
-import sdk.gui.WLogin;
 import sdk.net.RPNetNode;
 import sdk.types.particle.ParticleEmitterCollection;
 import sdk.player.Player;
@@ -19,6 +19,7 @@ import sdk.world.Area;
  * @author Xedecimal
  */
 public class Engine {
+	public static Charset cs = Charset.forName("ISO-8859-1");
 	public static Random r = new Random();
 	public static GameState State = GameState.Login;
 	public static Player Player;

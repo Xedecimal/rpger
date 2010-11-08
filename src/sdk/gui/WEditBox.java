@@ -1,6 +1,7 @@
 package sdk.gui;
 
 import sdk.Engine;
+import sdk.input.InputManager;
 import sdk.types.Rect;
 import sdk.types.RectD;
 import sdk.types.RegionSet;
@@ -37,22 +38,23 @@ public class WEditBox extends TextWidget
 	@Override
 	public ClickResponse MouseDown(Object sender, int xp, int yp, int buttons)
 	{
-		if (buttons == 1) return ClickResponse.Focus;
+		if (buttons == InputManager.MB_LEFT) return ClickResponse.Focus;
 		return ClickResponse.None;
 	}
 
 	@Override
-	public boolean KeyPress(int key)
+	public boolean KeyPress(char key)
 	{
 		switch (key)
 		{
 			case 8: //Backspace
-				if (Text.length() > 0) Text = Text.substring(0, Text.length() - 1);
+				if (Text.length() > 0)
+					Text = Text.substring(0, Text.length() - 1);
 				break;
 			case 13: //Enter
 				break;
 			default: //Readable
-				Text += (char)key;
+				Text += key;
 				break;
 		}
 		return true;

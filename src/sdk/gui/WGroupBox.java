@@ -69,7 +69,7 @@ public class WGroupBox extends TextWidget
 	}
 
 	@Override
-	public boolean KeyPress(int key)
+	public boolean KeyPress(char key)
 	{
 		if (m_focus != null) return m_focus.KeyPress(key);
 		return false;

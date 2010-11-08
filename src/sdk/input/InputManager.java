@@ -104,7 +104,10 @@ public class InputManager
 		{
 			int key = Keyboard.getEventKey();
 			if (Keyboard.getEventKeyState())
+			{
 				KeyDown(key);
+				KeyPress(Keyboard.getEventCharacter());
+			}
 			else
 				KeyUp(key);
 		}
@@ -145,13 +148,9 @@ public class InputManager
 
 	public void KeyDown(int key)
 	{
-		//System.out.println("Key Down: "+key);
 		if (!PressedKeys.contains(key))
-		{
-			KeyPress(key);
 			PressedKeys.add(key);
-		}
-
+		if (Actions.containsKey(key)) Actions.get(key).Handler.keyDown(true);
 	}
 
 	public void KeyUp(int key)
@@ -164,10 +163,9 @@ public class InputManager
 		}
 	}
 
-	protected void KeyPress(int key)
+	protected void KeyPress(char key)
 	{
 		if (Engine.guiMain.KeyPress(key)) return;
-		if (Actions.containsKey(key)) Actions.get(key).Handler.keyDown(true);
 	}
 
 	public void OnMouseMove(int x, int y)
@@ -243,29 +241,37 @@ public class InputManager
 
 	private class ActionUp implements KeyHandler
 	{
-		public void keyDown(boolean down) {
-			Engine.Player.AlterDir(Entity.DIR_N, down);
+		public void keyDown(boolean down)
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_N, down);
 		}
 	}
 
 	private class ActionLeft implements KeyHandler
 	{
-		public void keyDown(boolean down) {
-			Engine.Player.AlterDir(Entity.DIR_W, down);
+		public void keyDown(boolean down)
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_W, down);
 		}
 	}
 
 	private class ActionDown implements KeyHandler
 	{
-		public void keyDown(boolean down) {
-			Engine.Player.AlterDir(Entity.DIR_S, down);
+		public void keyDown(boolean down)
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_S, down);
 		}
 	}
 
 	private class ActionRight implements KeyHandler
 	{
-		public void keyDown(boolean down) {
-			Engine.Player.AlterDir((int)Entity.DIR_E, down);
+		public void keyDown(boolean down)
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_E, down);
 		}
 	}
 }

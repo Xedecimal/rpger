@@ -105,6 +105,13 @@ public class MapIsometric
 		}
 	}
 
+	public void generate()
+	{
+		for (int ix = 0; ix < Width; ix++)
+			for (int iy = 0; iy < Height; iy++)
+				this.get(ix, iy).ID = (short)Engine.r.nextInt(5);
+	}
+
 	/**
 	 * Do not use GL translating because the tile needs to know where it is
 	 * for interaction with the world (creating an emitter on destruction, etc)

@@ -3,6 +3,7 @@ package sdk.gui;
 import java.util.ArrayList;
 import java.util.Iterator;
 import sdk.Engine;
+import sdk.input.InputManager;
 import sdk.types.Rect;
 import sdk.types.RectD;
 import sdk.types.RegionSet;
@@ -64,7 +65,7 @@ public class WButton extends TextWidget
 	@Override
 	public ClickResponse MouseUp(Object sender, int x, int y, int buttons)
 	{
-		if (buttons == 1 && this.ScreenRect().Contains(x, y))
+		if (buttons == InputManager.MB_LEFT && this.ScreenRect().Contains(x, y))
 		{
 			if (OnClick != null)
 			{
