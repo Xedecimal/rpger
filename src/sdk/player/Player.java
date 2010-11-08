@@ -1,6 +1,5 @@
 package sdk.player;
 
-import java.util.EnumSet;
 import org.lwjgl.opengl.GL11;
 import sdk.Engine;
 import sdk.types.Entity;
@@ -130,7 +129,7 @@ public class Player extends Entity
 				(int)y > Destination.y - vel)
 			{
 				Destination.x = Engine.r.nextInt(Space.w() * 32);
-				Destination.y = Engine.r.nextInt(Space.h() * 32);
+				Destination.y = Engine.r.nextInt(Space.h() * 16);
 			}
 			else MoveTowards(Destination);
 		}
@@ -164,14 +163,14 @@ public class Player extends Entity
 
 	public void MoveTowards(RPoint pDst)
 	{
-		/*if (pDst.x < (int)x && pDst.y < (int)y) SetDir(Direction.North.ordinal() | Direction.West.ordinal());
-		else if (pDst.x > (int)x && pDst.y < (int)y) SetDir(Direction.North | Direction.East);
-		else if (pDst.x > (int)x && pDst.y > (int)y) SetDir(Direction.South | Direction.East);
-		else if (pDst.x < (int)x && pDst.y > (int)y) SetDir(Direction.South | Direction.West);
-		else if (pDst.x < (int)x) SetDir(Direction.West);
-		else if (pDst.x > (int)x) SetDir(Direction.East);
-		else if (pDst.y < (int)y) SetDir(Direction.North);
-		else if (pDst.y > (int)y) SetDir(Direction.South);*/
+		if (pDst.x < (int)x && pDst.y < (int)y) SetDir(DIR_N | DIR_W);
+		else if (pDst.x > (int)x && pDst.y < (int)y) SetDir(DIR_N | DIR_E);
+		else if (pDst.x > (int)x && pDst.y > (int)y) SetDir(DIR_S | DIR_E);
+		else if (pDst.x < (int)x && pDst.y > (int)y) SetDir(DIR_S | DIR_W);
+		else if (pDst.x < (int)x) SetDir(DIR_W);
+		else if (pDst.x > (int)x) SetDir(DIR_E);
+		else if (pDst.y < (int)y) SetDir(DIR_N);
+		else if (pDst.y > (int)y) SetDir(DIR_S);
 	}
 
 	@Override
