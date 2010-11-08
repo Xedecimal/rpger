@@ -21,7 +21,7 @@ var ch_file_sp = new Packages.sdk.gui.ClickHandler() {
 		var c = new Clip(Engine.araMain, 13);
 		var p = new Pistol(Engine.araMain);
 		p.Use(c);
-		plrClient.Left = p;
+		plrClient.setLeft(p);
 
 		Engine.Player = plrClient;
 		Engine.araMain.AddObject(plrClient);

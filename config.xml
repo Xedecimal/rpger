@@ -2,10 +2,10 @@
 	<video/>
 	<sound/>
 	<input>
-		<bind key="105" hold="false" action="MOVE_UP" />
-		<bind key="83" hold="false" action="MOVE_LEFT" />
-		<bind key="101" hold="false" action="MOVE_DOWN" />
-		<bind key="86" hold="false" action="MOVE_RIGHT" />
+		<bind key="17" hold="false" action="MOVE_UP" />
+		<bind key="30" hold="false" action="MOVE_LEFT" />
+		<bind key="31" hold="false" action="MOVE_DOWN" />
+		<bind key="32" hold="false" action="MOVE_RIGHT" />
 		<!-- <bind key="51" hold="false" action="JUMP" /> -->
 		<!-- <bind key="126" hold="false" action="CONSOLE" /> -->
 	</input>

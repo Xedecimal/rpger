@@ -71,7 +71,7 @@ public class Engine {
 			FPS = ((FPS + m_frames) / 2);
 			m_frames = 0;
 		}
-		Delta = m_curTime - m_deltaTime;
+		Delta = (float)(m_curTime - m_deltaTime) / 1000;
 		m_deltaTime = Calendar.getInstance().getTimeInMillis();
 		Interface.Clear();
 		int offx = (int)intMain.CameraX;

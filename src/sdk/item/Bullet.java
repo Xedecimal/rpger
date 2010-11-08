@@ -11,7 +11,7 @@ import sdk.types.Space;
  *
  * @author Xedecimal
  */
-public class Bullet extends Item
+public class Bullet extends Item implements Cloneable
 {
 	private Texture m_tex;
 
@@ -39,5 +39,11 @@ public class Bullet extends Item
 	{
 		super.Break();
 		Space.Objects.remove(this);
+	}
+
+	@Override
+	public Object clone() throws CloneNotSupportedException
+	{
+		return super.clone();
 	}
 }

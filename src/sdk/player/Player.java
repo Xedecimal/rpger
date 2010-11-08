@@ -3,7 +3,6 @@ package sdk.player;
 import java.util.EnumSet;
 import org.lwjgl.opengl.GL11;
 import sdk.Engine;
-import sdk.types.Direction;
 import sdk.types.Entity;
 import sdk.types.RPoint;
 import sdk.types.RectD;
@@ -43,9 +42,14 @@ public class Player extends Entity
 	//Inventory
 
 	/** Item in left hand. */
-	public Item Left;
+	private Item m_left;
 	/** Item in right hand. */
-	public Item Right;
+	private Item m_right;
+
+	public Item getLeft() { return m_left; }
+	public Item getRight() { return m_right; }
+	public Item setLeft(Item i) { m_left = i; i.owner = this; return i; }
+	public Item setRight(Item i) { m_right = i; i.owner = this; return i; }
 
 	//public event DirChangeHandler OnDirChange;
 
@@ -65,6 +69,7 @@ public class Player extends Entity
 		h = 64;
 		m_animspeed = 13;
 		vel = 140;
+		//vel = 1;
 		m_frame = 0;
 
 		ID = 0;
@@ -73,7 +78,7 @@ public class Player extends Entity
 		m_regname = "player";
 		//m_pos = new Core.RPointF();
 		Destination = new RPoint();
-		Dir = EnumSet.of(Direction.None);
+		Dir = Entity.DIR_NONE;
 	}
 
 	/*public Player(BinaryReader r, Space parent) : this(parent)
@@ -131,29 +136,29 @@ public class Player extends Entity
 		}
 	}
 
-	public void AlterDir(Direction d, boolean add)
+	public void AlterDir(int dd, boolean add)
 	{
-		if (add) Dir.add(d);
-		else Dir.remove(d);
+		if (add) Dir |= dd;
+		else Dir ^= dd;
 		SetVisibleDir();
 	}
 
 	private void SetVisibleDir()
 	{
-		if (Dir.contains(Direction.North) && Dir.contains(Direction.East)) m_visibledir = 1;
-		else if (Dir.contains(Direction.South) && Dir.contains(Direction.East)) m_visibledir = 3;
-		else if (Dir.contains(Direction.South) && Dir.contains(Direction.West)) m_visibledir = 5;
-		else if (Dir.contains(Direction.North) && Dir.contains(Direction.West)) m_visibledir = 7;
-		else if (Dir.contains(Direction.North)) m_visibledir = 0;
-		else if (Dir.contains(Direction.East)) m_visibledir = 2;
-		else if (Dir.contains(Direction.South)) m_visibledir = 4;
-		else if (Dir.contains(Direction.West)) m_visibledir = 6;
+		if ((Dir & DIR_N) == DIR_N && (Dir & DIR_E) == DIR_E) m_visibledir = 1;
+		else if ((Dir & DIR_S) == DIR_S && (Dir & DIR_E) == DIR_E) m_visibledir = 3;
+		else if ((Dir & DIR_S) == DIR_S && (Dir & DIR_W) == DIR_W) m_visibledir = 5;
+		else if ((Dir & DIR_N) == DIR_N && (Dir & DIR_W) == DIR_W) m_visibledir = 7;
+		else if ((Dir & DIR_N) == DIR_N) m_visibledir = 0;
+		else if ((Dir & DIR_E) == DIR_E) m_visibledir = 2;
+		else if ((Dir & DIR_S) == DIR_S) m_visibledir = 4;
+		else if ((Dir & DIR_W) == DIR_W) m_visibledir = 6;
 	}
 
-	public void SetDir(Direction d)
+	public void SetDir(int d)
 	{
 		//if (Dir != d && OnDirChange != null) OnDirChange(this, d);
-		Dir.add(d);
+		Dir = d;
 		SetVisibleDir();
 	}
 
@@ -183,7 +188,7 @@ public class Player extends Entity
 		}
 		else { Think(); }
 
-		if (!Dir.contains(Direction.None))
+		if (Dir != DIR_NONE)
 		{
 			if ((m_frame += Engine.Delta * m_animspeed) > 7)
 				m_frame = 0;

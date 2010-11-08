@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package sdk.item;
 
 import java.awt.Point;
@@ -30,21 +25,18 @@ import sdk.types.VertexD;
 			{
 				Point target = Engine.araMain.ScreenToArea(x, y);
 				VertexD source = new VertexD(owner.x, owner.y, owner.z);
-				try {
-					Space.ThrowEntity(m_clip.bullet.getClass().newInstance(),
-						source, target, 1000);
-				} catch (InstantiationException ex) {
-					Logger.getLogger(Pistol.class.getName()).log(Level.SEVERE, null, ex);
-				} catch (IllegalAccessException ex) {
-					Logger.getLogger(Pistol.class.getName()).log(Level.SEVERE, null, ex);
-				}
+			try {
+				Space.ThrowEntity((Bullet) m_clip.bullet.clone(), source, target, 1000);
+			} catch (CloneNotSupportedException ex) {
+				Logger.getLogger(Pistol.class.getName()).log(Level.SEVERE, null, ex);
+			}
 			}
 		}
 
 		@Override
 		public void Use(Item target)
 		{
-			if (target.getClass().getName().compareTo("Clip") == 0)
+			if (target.getClass().getName().compareTo("sdk.item.Clip") == 0)
 				m_clip = (Clip)target;
 			super.Use(target);
 		}

@@ -10,7 +10,8 @@ import sdk.ActionKey;
 import sdk.Config;
 import sdk.Engine;
 import sdk.gui.WTileEdit;
-import sdk.types.Direction;
+import sdk.item.Item;
+import sdk.types.Entity;
 import sdk.types.Interface;
 import sdk.world.Tile;
 
@@ -24,8 +25,6 @@ public class InputManager
 	public static final int MB_LEFT = 0;
 	public static final int MB_RIGHT = 1;
 	public static final int MB_MIDDLE = 2;
-	public static final int MB_WUP = 3;
-	public static final int MB_WDN = 4;
 
 	public ArrayList<Integer> PressedKeys;
 	private HashMap<Integer, ActionKey> Actions;
@@ -104,7 +103,10 @@ public class InputManager
 		while (Keyboard.next())
 		{
 			int key = Keyboard.getEventKey();
-			if (Keyboard.getEventKeyState());
+			if (Keyboard.getEventKeyState())
+				KeyDown(key);
+			else
+				KeyUp(key);
 		}
 
 		while (Mouse.next())
@@ -143,6 +145,7 @@ public class InputManager
 
 	public void KeyDown(int key)
 	{
+		//System.out.println("Key Down: "+key);
 		if (!PressedKeys.contains(key))
 		{
 			KeyPress(key);
@@ -155,7 +158,7 @@ public class InputManager
 	{
 		if (PressedKeys.contains(key))
 		{
-			PressedKeys.remove(key);
+			PressedKeys.remove(PressedKeys.indexOf(key));
 			if (Actions.containsKey(key))
 				Actions.get(key).Handler.keyDown(false);
 		}
@@ -210,7 +213,8 @@ public class InputManager
 			//Left Click
 			if (button == InputManager.MB_LEFT)
 			{
-				if (Engine.Player.Left != null) Engine.Player.Left.Use(x, y);
+				Item i = Engine.Player.getLeft();
+				if (i != null) i.Use(x, y);
 			}
 
 			//Right Click
@@ -223,7 +227,8 @@ public class InputManager
 				}
 				else if (Engine.araMain != null)
 				{
-					if (Engine.Player.Right != null) Engine.Player.Right.Use(x, y);
+					Item i = Engine.Player.getRight();
+					if (i != null) i.Use(x, y);
 				}
 			}
 		}
@@ -239,28 +244,28 @@ public class InputManager
 	private class ActionUp implements KeyHandler
 	{
 		public void keyDown(boolean down) {
-			Engine.Player.AlterDir(Direction.North, down);
+			Engine.Player.AlterDir(Entity.DIR_N, down);
 		}
 	}
 
 	private class ActionLeft implements KeyHandler
 	{
 		public void keyDown(boolean down) {
-			Engine.Player.AlterDir(Direction.West, down);
+			Engine.Player.AlterDir(Entity.DIR_W, down);
 		}
 	}
 
 	private class ActionDown implements KeyHandler
 	{
 		public void keyDown(boolean down) {
-			Engine.Player.AlterDir(Direction.South, down);
+			Engine.Player.AlterDir(Entity.DIR_S, down);
 		}
 	}
 
 	private class ActionRight implements KeyHandler
 	{
 		public void keyDown(boolean down) {
-			Engine.Player.AlterDir(Direction.East, down);
+			Engine.Player.AlterDir((int)Entity.DIR_E, down);
 		}
 	}
 }

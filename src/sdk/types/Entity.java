@@ -9,8 +9,14 @@ import sdk.Engine;
  */
 public class Entity extends RectD
 {
+	public static final int DIR_NONE = 0;
+	public static final int DIR_N = 1;
+	public static final int DIR_E = 2;
+	public static final int DIR_S = 4;
+	public static final int DIR_W = 8;
+
 	public int vel;
-	public EnumSet<Direction> Dir;
+	public int Dir;
 	public double angle;
 	public float weight, damage, tolerance;
 	public boolean remove;
@@ -21,7 +27,7 @@ public class Entity extends RectD
 	{
 		Space = parent;
 		vel = 1;
-		Dir = EnumSet.of(Direction.None);
+		Dir = DIR_NONE;
 	}
 
 	public void Update(int offx, int offy)
@@ -37,12 +43,12 @@ public class Entity extends RectD
 			float m_deltaposx = vel * Engine.Delta;
 			float m_deltaposy = vel * Engine.Delta / 2;
 
-			if (Engine.araMain != null)
+			if (Dir != DIR_NONE && Engine.araMain != null)
 			{
-				if (Dir.contains(Direction.North)) y -= m_deltaposy;
-				if (Dir.contains(Direction.East)) x += m_deltaposx;
-				if (Dir.contains(Direction.South)) y += m_deltaposy;
-				if (Dir.contains(Direction.West)) x -= m_deltaposx;
+				if ((Dir & DIR_N) == DIR_N) y -= m_deltaposy;
+				if ((Dir & DIR_E) == DIR_E) x += m_deltaposx;
+				if ((Dir & DIR_S) == DIR_S) y += m_deltaposy;
+				if ((Dir & DIR_W) == DIR_W) x -= m_deltaposx;
 			}
 		}
 	}
