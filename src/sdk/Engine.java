@@ -3,12 +3,13 @@ package sdk;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Random;
-import org.w3c.dom.Document;
 import sdk.input.InputManager;
 import sdk.types.GameState;
 import sdk.types.Interface;
 import sdk.types.RegionManager;
 import sdk.gui.GUI;
+import sdk.gui.WLogin;
+import sdk.net.RPNetNode;
 import sdk.types.particle.ParticleEmitterCollection;
 import sdk.player.Player;
 import sdk.world.Area;
@@ -27,7 +28,7 @@ public class Engine {
 	public static ParticleEmitterCollection pecMain;
 	public static GUI guiMain;
 	public static Area araMain;
-	//public static RPNetNode netMain;
+	public static RPNetNode netMain;
 	public static RegionManager regMain;
 	public static InputManager inpMain;
 	public static float Delta;
@@ -56,7 +57,7 @@ public class Engine {
 	}
 	public static void InitParticles() { pecMain = new ParticleEmitterCollection(); }
 	public static void InitGUI() { guiMain = new GUI(); }
-	//public static void InitNetwork(Document config) { netMain = new RPNetNode(config); }
+	public static void InitNetwork(Config config) { netMain = new RPNetNode(config); }
 	public static void InitRegions() { regMain = new RegionManager(); }
 	public static void InitInput(Config config) { inpMain = new InputManager(config); }
 
@@ -102,4 +103,15 @@ public class Engine {
 		long fraction = (long)(range * r.nextDouble());
 		return (int)(fraction + start);
 	}
+
+	public static String repeat(String s, int n) {
+    if(s == null) {
+        return null;
+    }
+    final StringBuilder sb = new StringBuilder();
+    for(int i = 0; i < n; i++) {
+        sb.append(s);
+    }
+    return sb.toString();
+}
 }

@@ -25,12 +25,11 @@ public class WEditBox extends TextWidget
 	@Override
 	public void Render(int offx, int offy, RegionSet RS)
 	{
-		RS.Draw(GUITiles.EBOX_L.ordinal(), new RectD(offx+X,     offy+Y, 16,   Height), 1);
-		RS.Draw(GUITiles.EBOX_M.ordinal(), new RectD(offx+X+16,  offy+Y, Width-32, Height), 1);
-		RS.Draw(GUITiles.EBOX_R.ordinal(), new RectD(offx+right()-16,  offy+Y, 16,   Height), 1);
+		RS.Draw(EBOX_L, new RectD(offx+X,     offy+Y, 16,   Height), 1);
+		RS.Draw(EBOX_M, new RectD(offx+X+16,  offy+Y, Width-32, Height), 1);
+		RS.Draw(EBOX_R, new RectD(offx+right()-16,  offy+Y, 16,   Height), 1);
 
-		if (Masked) Engine.intMain.DrawText(String.format(String.format(
-			"%%0%dd", Text.length()), 0).replace("0","*"),
+		if (Masked) Engine.intMain.DrawText(Engine.repeat("*", Text.length()),
 			offx + X, offy + Y + 2);
 		else Engine.intMain.DrawText(Text, offx + X, offy + Y + 2);
 	}

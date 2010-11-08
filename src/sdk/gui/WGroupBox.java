@@ -51,17 +51,17 @@ public class WGroupBox extends TextWidget
 	@Override
 	public void Render(int offx, int offy, RegionSet RS)
 	{
-		RS.Draw(GUITiles.GROUP_TL.ordinal(), new RectD(offx+X,        offy+Y+16,      16,       16), 1);
-		RS.Draw(GUITiles.GROUP_TM.ordinal(), new RectD(offx+X+16,     offy+Y+16,      Width-32, 16), 1);
-		RS.Draw(GUITiles.GROUP_TR.ordinal(), new RectD(offx+right()-16, offy+Y+16,      16,       16), 1);
+		RS.Draw(GROUP_TL, new RectD(offx+X,        offy+Y+16,      16,       16), 1);
+		RS.Draw(GROUP_TM, new RectD(offx+X+16,     offy+Y+16,      Width-32, 16), 1);
+		RS.Draw(GROUP_TR, new RectD(offx+right()-16, offy+Y+16,      16,       16), 1);
 
-		RS.Draw(GUITiles.GROUP_ML.ordinal(), new RectD(offx+X,        offy+Y+32,      16,       Height-48), 1);
-		RS.Draw(GUITiles.GROUP_MM.ordinal(), new RectD(offx+X+16,     offy+Y+32,      Width-32, Height-48), 1);
-		RS.Draw(GUITiles.GROUP_MR.ordinal(), new RectD(offx+right()-16, offy+Y+32,      16,       Height-48), 1);
+		RS.Draw(GROUP_ML, new RectD(offx+X,        offy+Y+32,      16,       Height-48), 1);
+		RS.Draw(GROUP_MM, new RectD(offx+X+16,     offy+Y+32,      Width-32, Height-48), 1);
+		RS.Draw(GROUP_MR, new RectD(offx+right()-16, offy+Y+32,      16,       Height-48), 1);
 
-		RS.Draw(GUITiles.GROUP_BL.ordinal(), new RectD(offx+X,        offy+bottom()-16, 16,       16), 1);
-		RS.Draw(GUITiles.GROUP_BM.ordinal(), new RectD(offx+X+16,     offy+bottom()-16, Width-32, 16), 1);
-		RS.Draw(GUITiles.GROUP_BR.ordinal(), new RectD(offx+right()-16, offy+bottom()-16, 16,       16), 1);
+		RS.Draw(GROUP_BL, new RectD(offx+X,        offy+bottom()-16, 16,       16), 1);
+		RS.Draw(GROUP_BM, new RectD(offx+X+16,     offy+bottom()-16, Width-32, 16), 1);
+		RS.Draw(GROUP_BR, new RectD(offx+right()-16, offy+bottom()-16, 16,       16), 1);
 
 		Engine.intMain.DrawText(Text, offx + X + 10, offy + Y);
 		Iterator<Widget> i = Widgets.iterator();

@@ -1,14 +1,24 @@
 package sdk.net;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
-import javax.swing.text.Document;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import sdk.Config;
 
 /**
  *
  * @author Xedecimal
  */
-/*public class RPNetNode
+public class RPNetNode
 {
 	private ArrayList<Socket> m_sock_nodes;
 	private Socket m_sock_gateway;
@@ -16,25 +26,29 @@ import javax.swing.text.Document;
 	String m_user, m_pass;
 	public int Port;
 
-	//MemoryStream msout;
-	//BinaryWriter bwout;
+	DataInputStream input;
+	DataOutputStream output;
 
 	public ArrayList<RPNetGateway> Gateways;
 
 	public boolean Connected = false;
 
-	//public event BrowseResultHandler OnBrowseResult;
+	public BrowseResultHandler OnBrowseResult;
+
 	//public event DataReadHandler OnDataRead;
 
-	public RPNetNode(Document config)
+	public RPNetNode(Config c)
 	{
-		msout = new MemoryStream();
-		bwout = new BinaryWriter(msout);
-		Gateways = new List<RPNetGateway>();
-		XmlNodeList xnl = config.SelectNodes("//network/gateway");
-		foreach (XmlNode xn in xnl)
+		//msout = new MemoryStream();
+		//bwout = new BinaryWriter(msout);
+		Gateways = new ArrayList<RPNetGateway>();
+		NodeList nl = c.get("//network/gateway");
+		for (int ix = 0; ix < nl.getLength(); ix++)
 		{
-			Gateways.Add(new RPNetGateway(xn.Attributes["host"].Value, Int32.Parse(xn.Attributes["port"].Value)));
+			Node n = nl.item(ix);
+			String host = n.getAttributes().getNamedItem("host").getNodeValue();
+			int port = Integer.parseInt(n.getAttributes().getNamedItem("port").getNodeValue());
+			Gateways.add(new RPNetGateway(host, port));
 		}
 	}
 
@@ -42,19 +56,20 @@ import javax.swing.text.Document;
 	public boolean Browse(String host, int port)
 	{
 		bin = new byte[4096];
-		m_sock_gateway = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 		try
 		{
-			Port = port;
-			IPEndPoint ipe = new IPEndPoint(Dns.GetHostEntry(host).AddressList[0], port);
-			m_sock_gateway.Connect(ipe);
-			m_sock_gateway.BeginReceive(bin, 0, bin.Length, SocketFlags.None, new AsyncCallback(m_browser_read), this);
+			m_sock_gateway = new Socket(host, port);
+			input = new DataInputStream(m_sock_gateway.getInputStream());
+			output = new DataOutputStream(m_sock_gateway.getOutputStream());
+		} catch (UnknownHostException ex) {
+			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		catch (SocketException) { return false; }
 		return true;
 	}
 
-	private void m_browser_read(IAsyncResult ar)
+	/*private void m_browser_read(IAsyncResult ar)
 	{
 		int read = m_sock_gateway.EndReceive(ar);
 		if (read == 0) return;
@@ -68,30 +83,32 @@ import javax.swing.text.Document;
 			line = sr.ReadLine();
 		}
 		m_sock_gateway.BeginReceive(bin, 0, bin.Length, SocketFlags.None, new AsyncCallback(m_browser_read), this);
-	}
+	}*/
 
 	//Client
 	public boolean Connect(String url, String user, String pass)
 	{
 		m_user = user; m_pass = pass;
 		cin = new byte[8];
-		Match m = Regex.Match(url, "rpger://(.*?):(.*?)/(.*)", RegexOptions.IgnoreCase);
-		string host = m.Groups[1].Value;
-		int port = Convert.ToInt32(m.Groups[2].Value);
-		string name = m.Groups[3].Value;
-
-		m_sock_gateway = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-		try
-		{
-			IPEndPoint ipe = new IPEndPoint(Dns.GetHostEntry(host).AddressList[0], port);
-			m_sock_gateway.Connect(ipe);
-			m_sock_gateway.BeginReceive(cin, 0, cin.Length, SocketFlags.None, new AsyncCallback(m_client_readhead), this);
+		Pattern p = Pattern.compile("rpger://(.*?):(.*?)/(.*)");
+		Matcher m = p.matcher(url);
+		//Match m = Regex.Match(url, , RegexOptions.IgnoreCase);
+		String host = m.group(1);
+		int port = Integer.parseInt(m.group(2));
+		String name = m.group(3);
+		try {
+			m_sock_gateway = new Socket(host, port);
+			DataInputStream dis = new DataInputStream(m_sock_gateway.getInputStream());
+		} catch (UnknownHostException ex) {
+			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
+		} catch (IOException ex) {
+			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		catch (SocketException) { return false; }
+
 		return true;
 	}
 
-	private void m_client_readhead(IAsyncResult ar)
+	/*private void m_client_readhead(IAsyncResult ar)
 	{
 		int read = 0;
 		try
@@ -115,19 +132,19 @@ import javax.swing.text.Document;
 
 		cin = new byte[size];
 		m_sock_gateway.BeginReceive(cin, 0, cin.Length, SocketFlags.None, new AsyncCallback(m_client_readchunk), this);
-	}
+	}*/
 
-	public void m_client_readchunk(IAsyncResult ar)
+	/*public void m_client_readchunk(IAsyncResult ar)
 	{
 		int read = m_sock_gateway.EndReceive(ar);
 		System.out.println("chunk size: " + read);
 
-		MemoryStream ms = new MemoryStream(cin);
-		BinaryReader br = new BinaryReader(ms);
+		//MemoryStream ms = new MemoryStream(cin);
+		//BinaryReader br = new BinaryReader(ms);
 
-		PacketType t = (PacketType)br.ReadInt32();
+		//PacketType t = (PacketType)br.ReadInt32();
 		System.out.println("type: " + t);
-		if (OnDataRead != null) OnDataRead(t, ms);
+		//if (OnDataRead != null) OnDataRead(t, ms);
 
 		switch (t)
 		{
@@ -163,30 +180,50 @@ import javax.swing.text.Document;
 
 		cin = new byte[8];
 		m_sock_gateway.BeginReceive(cin, 0, cin.Length, SocketFlags.None, new AsyncCallback(m_client_readhead), this);
-	}
+	}*/
 
 	public void Send()
 	{
-		m_sock_gateway.Send(BitConverter.GetBytes(msout.Length));
-		m_sock_gateway.Send(msout.GetBuffer());
+		//@TODO: Fix me.
+		//m_sock_gateway.Send(BitConverter.GetBytes(msout.Length));
+		//m_sock_gateway.Send(msout.GetBuffer());
 	}
 
 	public void SendText(Socket sock, String text)
 	{
-		if (sock == null)
+		/*if (sock == null)
 		{
 			Iterator<Socket> i = m_sock_nodes.iterator();
-			while (i.hasNext()) i.next().SendText(sockix, text);
+			while (i.hasNext())
+			{
+				Socket sockix = i.next();
+				//sockix.SendText(sockix, text);
+			}
 		}
 		else
 		{
 			byte[] data = Encoding.ASCII.GetBytes(text);
 			if (sock != null) sock.Send(data, 0, data.Length, SocketFlags.None);
-		}
+		}*/
 	}
 
 	public void Update(int offx, int offy)
 	{
-		//m_area.Update(offx, offy);
+		int a = 0;
+		try {
+			a = input.available();
+		} catch (IOException ex) {
+			Logger.getLogger(RPNetNode.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		if (a != 0)
+		{
+			System.out.println("Data available!");
+		}
 	}
-}*/
+
+	public interface BrowseResultHandler
+	{
+		public void onResult(String url);
+	}
+}

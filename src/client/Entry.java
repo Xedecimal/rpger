@@ -9,6 +9,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import org.xml.sax.SAXException;
 import sdk.Engine;
+import sdk.gui.WLogin;
 import sdk.types.GameState;
 import sdk.types.RPointD;
 import sdk.types.particle.ParticleEmitter;
@@ -43,7 +44,7 @@ public class Entry
 		Engine.InitRegions();
 		Engine.InitParticles();
 		Engine.InitGUI();
-		//Engine.InitNetwork(doc);
+		Engine.InitNetwork(Engine.config);
 
 		//Engine
 		Engine.State = GameState.Login;
@@ -61,6 +62,8 @@ public class Entry
 		pe.Filters.add(new ParticleFilterFade(-0.005f, 0.005f, -0.005f, -0.005f));
 		pe.Filters.add(new ParticleFilterRotate());
 		Engine.pecMain.add(pe);
+
+		Engine.guiMain.add(new WLogin());
 
 		//Script
 

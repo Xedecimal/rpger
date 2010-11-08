@@ -2,7 +2,10 @@ package sdk.gui;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.lwjgl.opengl.GL11;
+import sdk.Engine;
 import sdk.types.Rect;
+import sdk.types.RectD;
 import sdk.types.RegionSet;
 
 /**
@@ -23,6 +26,8 @@ public class WWindow extends TextWidget
 		super(r, title);
 		Widgets = new ArrayList<Widget>();
 	}
+
+	public WWindow(Rect r, String title, Object obj) { this(r, title); }
 
 	public void Add(Widget w)
 	{
@@ -61,30 +66,30 @@ public class WWindow extends TextWidget
 	@Override
 	public void Render(int offx, int offy, RegionSet RS)
 	{
-		/*Interface.GL.glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
-		Gl.glLoadIdentity();
-		RS.Draw((int)GUITiles.WINDOW_TTL, new RectD(offx+X,        offy+Y,         16,       16), 1);
-		RS.Draw((int)GUITiles.WINDOW_TTM, new RectD(offx+X+16,     offy+Y,         Width-32, 16), 1);
-		RS.Draw((int)GUITiles.WINDOW_TTR, new RectD(offx+Right-16, offy+Y,         16,       16), 1);
-		RS.Draw((int)GUITiles.WINDOW_TCC, new RectD(offx+Right-16, offy+Y,         16,       16), 1);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 0.5f);
+		GL11.glLoadIdentity();
+		RS.Draw(WINDOW_TTL, new RectD(offx+X,        offy+Y,         16,       16), 1);
+		RS.Draw(WINDOW_TTM, new RectD(offx+X+16,     offy+Y,         Width-32, 16), 1);
+		RS.Draw(WINDOW_TTR, new RectD(offx+right()-16, offy+Y,         16,       16), 1);
+		RS.Draw(WINDOW_TCC, new RectD(offx+right()-16, offy+Y,         16,       16), 1);
 
-		RS.Draw((int)GUITiles.WINDOW_BTL, new RectD(offx+X,        offy+Y+16,      16,       16), 1);
-		RS.Draw((int)GUITiles.WINDOW_BTM, new RectD(offx+X+16,     offy+Y+16,      Width-32, 16), 1);
-		RS.Draw((int)GUITiles.WINDOW_BTR, new RectD(offx+Right-16, offy+Y+16,      16,       16), 1);
+		RS.Draw(WINDOW_BTL, new RectD(offx+X,        offy+Y+16,      16,       16), 1);
+		RS.Draw(WINDOW_BTM, new RectD(offx+X+16,     offy+Y+16,      Width-32, 16), 1);
+		RS.Draw(WINDOW_BTR, new RectD(offx+right()-16, offy+Y+16,      16,       16), 1);
 
-		RS.Draw((int)GUITiles.WINDOW_BML, new RectD(offx+X,        offy+Y+32,      16,       Height-48), 1);
-		RS.Draw((int)GUITiles.WINDOW_B,   new RectD(offx+X+16,     offy+Y+32,      Width-32, Height-48), 1);
-		RS.Draw((int)GUITiles.WINDOW_BMR, new RectD(offx+Right-16, offy+Y+32,      16,       Height-48), 1);
+		RS.Draw(WINDOW_BML, new RectD(offx+X,        offy+Y+32,      16,       Height-48), 1);
+		RS.Draw(WINDOW_B,   new RectD(offx+X+16,     offy+Y+32,      Width-32, Height-48), 1);
+		RS.Draw(WINDOW_BMR, new RectD(offx+right()-16, offy+Y+32,      16,       Height-48), 1);
 
-		RS.Draw((int)GUITiles.WINDOW_BBL, new RectD(offx+X,        offy+Bottom-16, 16,       16), 1);
-		RS.Draw((int)GUITiles.WINDOW_BBM, new RectD(offx+X+16,     offy+Bottom-16, Width-32, 16), 1);
-		RS.Draw((int)GUITiles.WINDOW_BBR, new RectD(offx+Right-16, offy+Bottom-16, 16,       16), 1);
+		RS.Draw(WINDOW_BBL, new RectD(offx+X,        offy+bottom()-16, 16,       16), 1);
+		RS.Draw(WINDOW_BBM, new RectD(offx+X+16,     offy+bottom()-16, Width-32, 16), 1);
+		RS.Draw(WINDOW_BBR, new RectD(offx+right()-16, offy+bottom()-16, 16,       16), 1);
 
-		Gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 		Engine.intMain.DrawText(Text, offx + X + 5, offy + Y + 1);
 
 		Iterator<Widget> i = Widgets.iterator();
-		while (i.hasNext()) i.next().Render(offx+xoff(), offy+yoff(), RS);*/
+		while (i.hasNext()) i.next().Render(offx+xoff(), offy+yoff(), RS);
 	}
 
 	@Override

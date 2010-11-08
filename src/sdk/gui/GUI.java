@@ -131,7 +131,10 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	 */
 	public boolean MouseMove(int xp, int yp)
 	{
-		if (m_dragging) { m_focus.Offset(xp-lx, yp-ly); lx = xp; ly = yp; return true; }
+		if (m_dragging && m_focus != null)
+		{
+			m_focus.Offset(xp-lx, yp-ly); lx = xp; ly = yp; return true;
+		}
 		lx = xp; ly = yp;
 		Iterator<Widget> i = iterator();
 		while (i.hasNext())

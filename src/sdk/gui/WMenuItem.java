@@ -88,34 +88,34 @@ public class WMenuItem extends TextWidget
 		if (!Hover) { GL11.glColor4d(1, 1, 1, 0.5); }
 		if (Text.equals("-"))
 		{
-			RS.Draw(GUITiles.MENU_SL.ordinal(), new RectD(offx+X,    offy+Y, 16,   16), 1);
-			RS.Draw(GUITiles.MENU_SM.ordinal(), new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
-			RS.Draw(GUITiles.MENU_SR.ordinal(), new RectD(offx+right()-16, offy+Y, 16,   16), 1);
+			RS.Draw(MENU_SL, new RectD(offx+X,    offy+Y, 16,   16), 1);
+			RS.Draw(MENU_SM, new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
+			RS.Draw(MENU_SR, new RectD(offx+right()-16, offy+Y, 16,   16), 1);
 		}
-		else if (reg == MenuType.TOP.ordinal())
+		else if (reg == MT_TOP)
 		{
-			RS.Draw(GUITiles.MENU_TL.ordinal(), new RectD(offx+X,    offy+Y, 16,   16), 1);
-			RS.Draw(GUITiles.MENU_TM.ordinal(), new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
-			RS.Draw(GUITiles.MENU_TR.ordinal(), new RectD(offx+right()-16, offy+Y, 16,   16), 1);
+			RS.Draw(MENU_TL, new RectD(offx+X,    offy+Y, 16,   16), 1);
+			RS.Draw(MENU_TM, new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
+			RS.Draw(MENU_TR, new RectD(offx+right()-16, offy+Y, 16,   16), 1);
 			Engine.intMain.DrawText(Text, offx + X + 16, offy + Y);
 		}
-		else if (reg == MenuType.MIDDLE.ordinal())
+		else if (reg == MT_MIDDLE)
 		{
-			RS.Draw(GUITiles.MENU_ML.ordinal(), new RectD(offx+X,    offy+Y, 16,   16), 1);
-			RS.Draw(GUITiles.MENU_MM.ordinal(), new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
-			RS.Draw(GUITiles.MENU_MR.ordinal(), new RectD(offx+right()-16, offy+Y, 16,   16), 1);
+			RS.Draw(MENU_ML, new RectD(offx+X,    offy+Y, 16,   16), 1);
+			RS.Draw(MENU_MM, new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
+			RS.Draw(MENU_MR, new RectD(offx+right()-16, offy+Y, 16,   16), 1);
 			Engine.intMain.DrawText(Text, offx + X + 16, offy + Y);
 		}
-		else if (reg == MenuType.BOTTOM.ordinal())
+		else if (reg == MT_BOTTOM)
 		{
-			RS.Draw(GUITiles.MENU_BL.ordinal(), new RectD(offx+X,    offy+Y, 16,   16), 1);
-			RS.Draw(GUITiles.MENU_BM.ordinal(), new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
-			RS.Draw(GUITiles.MENU_BR.ordinal(), new RectD(offx+right()-16, offy+Y, 16,   16), 1);
+			RS.Draw(MENU_BL, new RectD(offx+X,    offy+Y, 16,   16), 1);
+			RS.Draw(MENU_BM, new RectD(offx+X+16, offy+Y, Width-32, 16), 1);
+			RS.Draw(MENU_BR, new RectD(offx+right()-16, offy+Y, 16,   16), 1);
 			Engine.intMain.DrawText(Text, offx + X + 16, offy + Y);
 		}
 		else Engine.intMain.DrawText(Text, offx + X + 16, offy + Y);
 
-		if (Checked) RS.Draw(GUITiles.CHECK_ON.ordinal(), new RectD(offx+X, offy+Y, 16, 16), 1);
+		if (Checked) RS.Draw(CHECK_ON, new RectD(offx+X, offy+Y, 16, 16), 1);
 		if (!Hover) { GL11.glColor4d(1, 1, 1, 1); }
 		if (Expanded)
 		{
@@ -177,4 +177,10 @@ public class WMenuItem extends TextWidget
 		else Hover = true;
 		return true;
 	}
+
+	/** Menu Types */
+	public static final int MT_TOP = 0;
+	public static final int MT_MIDDLE = 1;
+	public static final int MT_BOTTOM = 2;
+	public static final int MT_MAIN = 3;
 }

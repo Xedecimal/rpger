@@ -27,6 +27,7 @@ public class WButton extends TextWidget
 	public WButton(Rect r, String text, ClickHandler e)
 	{
 		super(r, text);
+		OnClick = new ArrayList<ClickHandler>();
 		OnClick.add(e);
 	}
 
@@ -35,16 +36,16 @@ public class WButton extends TextWidget
 	{
 		if (m_pressed)
 		{
-			RS.Draw(GUITiles.PBUTTON_L.ordinal(), new RectD(offx+X,     offy+Y, 16,   Height), 1);
-			RS.Draw(GUITiles.PBUTTON_B.ordinal(), new RectD(offx+X+16,  offy+Y, Width-32, Height), 1);
-			RS.Draw(GUITiles.PBUTTON_R.ordinal(), new RectD(offx+right()-16,  offy+Y, 16,   Height), 1);
+			RS.Draw(PBUTTON_L, new RectD(offx+X,     offy+Y, 16,   Height), 1);
+			RS.Draw(PBUTTON_B, new RectD(offx+X+16,  offy+Y, Width-32, Height), 1);
+			RS.Draw(PBUTTON_R, new RectD(offx+right()-16,  offy+Y, 16,   Height), 1);
 			Engine.intMain.DrawText(Text, offx+X+3, offy+Y+1);
 		}
 		else
 		{
-			RS.Draw(GUITiles.BUTTON_L.ordinal(), new RectD(offx+X,     offy+Y, 16,   Height), 1);
-			RS.Draw(GUITiles.BUTTON_B.ordinal(), new RectD(offx+X+16,  offy+Y, Width-32, Height), 1);
-			RS.Draw(GUITiles.BUTTON_R.ordinal(), new RectD(offx+right()-16,  offy+Y, 16,   Height), 1);
+			RS.Draw(BUTTON_L, new RectD(offx+X,     offy+Y, 16,   Height), 1);
+			RS.Draw(BUTTON_B, new RectD(offx+X+16,  offy+Y, Width-32, Height), 1);
+			RS.Draw(BUTTON_R, new RectD(offx+right()-16,  offy+Y, 16,   Height), 1);
 			Engine.intMain.DrawText(Text, offx+X+2, offy+Y);
 		}
 	}

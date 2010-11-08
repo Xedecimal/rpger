@@ -110,7 +110,7 @@ public class WMenu extends Widget
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glColor4f(1, 1, 1, 1);
 		Iterator<WMenuItem> i = m_items.iterator();
-		while (i.hasNext()) i.next().Render(0, 0, MenuType.MAIN.ordinal(), RS);
+		while (i.hasNext()) i.next().Render(0, 0, WMenuItem.MT_MAIN, RS);
 	}
 
 	@Override
