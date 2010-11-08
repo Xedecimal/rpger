@@ -113,8 +113,9 @@ public class InputManager
 			if (Mouse.getDX() != 0 || Mouse.getDY() != 0)
 				OnMouseMove(Mouse.getX(), Engine.intMain.Height-Mouse.getY());
 
-			if (Mouse.getDWheel() != 0)
-				OnMouseWheel(Mouse.getDWheel());
+			int d = 0;
+			if ((d = Mouse.getDWheel()) != 0)
+				OnMouseWheel(Mouse.getX(), Engine.intMain.Height-Mouse.getY(), d);
 
 			// Button pressed.
 			if (Mouse.getEventButton() != -1)
@@ -178,8 +179,22 @@ public class InputManager
 		if (Engine.guiMain.MouseMove(x, y)) return;
 	}
 
-	public void OnMouseWheel(int w)
+	public void OnMouseWheel(int x, int y, int w)
 	{
+		//Wheel Up
+		if (w > 0)
+		{
+			Tile t = Engine.intMain.ScreenToAreaTile(x, y);
+			if (t != null)
+				t.Push(new Tile(Engine.araMain, t.ID, false));
+		}
+		//Wheel Down
+		if (w < 0)
+		{
+			Tile t = Engine.intMain.ScreenToAreaTile(x, y);
+			if (t != null)
+				t.Pop();
+		}
 	}
 
 	public void OnMouseDown(int x, int y, int button)
@@ -211,21 +226,6 @@ public class InputManager
 					if (Engine.Player.Right != null) Engine.Player.Right.Use(x, y);
 				}
 			}
-
-			//Wheel Up
-			if (button == InputManager.MB_WUP)
-			{
-				Tile t = Engine.intMain.ScreenToAreaTile(x, y);
-				if (t != null)
-					t.Push(new Tile(Engine.araMain, t.ID, false));
-			}
-			//Wheel Down
-			if (button == InputManager.MB_WDN)
-			{
-				Tile t = Engine.intMain.ScreenToAreaTile(x, y);
-				if (t != null)
-					t.Pop();
-			}
 		}
 	}
 
@@ -234,11 +234,6 @@ public class InputManager
 		if (!Buts[button]) return;
 		Buts[button] = false;
 		if (Engine.guiMain.MouseUp(x, y, button)) return;
-	}
-
-	private void Action_Move_Right(boolean down)
-	{
-		
 	}
 
 	private class ActionUp implements KeyHandler
