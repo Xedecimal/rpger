@@ -4,10 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import sdk.ActionKey;
+import sdk.Config;
 import sdk.Engine;
+import sdk.gui.WTileEdit;
 import sdk.types.Direction;
+import sdk.types.Interface;
 import sdk.world.Tile;
 
 /**
@@ -33,23 +37,30 @@ public class InputManager
 	public int MouseX;
 	public int MouseY;
 
-	public InputManager(Document config)
+	public InputManager(Config config)
 	{
 		Actions = new HashMap<Integer, ActionKey>();
 		PressedKeys = new ArrayList<Integer>();
 		Buts = new boolean[6];
 
-		/*XmlNodeList xnl = config.SelectNodes("/configuration/input/bind");
-		foreach (XmlNode xn in xnl)
+		NodeList nl = config.get("/configuration/input/bind");
+		for (int ix = 0; ix < nl.getLength(); ix++)
 		{
+			Node n = nl.item(ix);
+
+			boolean hold = false;
+			String atrkey = n.getAttributes().getNamedItem("key").getNodeValue();
+			String atrhold = n.getAttributes().getNamedItem("hold").getNodeValue();
+			String atract = n.getAttributes().getNamedItem("action").getNodeValue();
+
 			int key = 0;
-			bool hold = false;
-			string atrkey = xn.Attributes["key"].Value;
-			string atrhold = xn.Attributes["hold"].Value;
-			string atract = xn.Attributes["action"].Value;
-			if (!int.TryParse(atrkey, out key))
+			try
 			{
-				if (atrkey.Length == 1) key = (int)atrkey[0];
+				key = Integer.parseInt(atrkey);
+			}
+			catch (NumberFormatException ex)
+			{
+				if (atrkey.length() == 1) key = (int)atrkey.charAt(0);
 				else
 				{
 					System.out.println("Couldn't convert INT key (" + atrkey + ") to an actual key.");
@@ -57,33 +68,35 @@ public class InputManager
 					continue;
 				}
 			}
-			if (!bool.TryParse(atrhold, out hold))
-			{
-				System.out.println("Couldn't convert (" + atrhold + ") to either true or false.");
-				continue;
-			}
-			object parsed = Enum.Parse(typeof(ActionTypes), atract, true);
-			if (parsed == null)
+
+			hold = Boolean.parseBoolean(atrhold);
+			//{
+			//	System.out.println("Couldn't convert (" + atrhold + ") to either True or False.");
+			//	continue;
+			//}
+
+			ActionTypes at = ActionTypes.valueOf(atract);
+			if (at == null)
 			{
 				System.out.println("Couldn't convert action type (" + atract + ") to a valid action.");
 				continue;
 			}
-			switch ((ActionTypes)parsed)
+			switch (at)
 			{
-				case ActionTypes.MOVE_UP:
-					Actions[key] = new ActionKey(new KeyHandler(Action_Move_Up), hold);
+				case MOVE_UP:
+					Actions.put(key, new ActionKey(new ActionUp(), hold));
 					break;
-				case ActionTypes.MOVE_LEFT:
-					Actions[key] = new ActionKey(new KeyHandler(Action_Move_Left), hold);
+				case MOVE_LEFT:
+					Actions.put(key, new ActionKey(new ActionLeft(), hold));
 					break;
-				case ActionTypes.MOVE_DOWN:
-					Actions[key] = new ActionKey(new KeyHandler(Action_Move_Down), hold);
+				case MOVE_DOWN:
+					Actions.put(key, new ActionKey(new ActionDown(), hold));
 					break;
-				case ActionTypes.MOVE_RIGHT:
-					Actions[key] = new ActionKey(new KeyHandler(Action_Move_Right), hold);
+				case MOVE_RIGHT:
+					Actions.put(key, new ActionKey(new ActionRight(), hold));
 					break;
 			}
-		}*/
+		}
 	}
 
 	public void Update()
@@ -117,37 +130,40 @@ public class InputManager
 			}
 		}
 
-		/*for (int ix = PressedKeys.size() - 1; ix >= 0; ix--)
+		for (int ix = PressedKeys.size() - 1; ix >= 0; ix--)
 		{
 			if (Actions.containsKey(PressedKeys.get(ix)))
 			{
 				if (Actions.get(PressedKeys.get(ix)).Hold)
-					Actions.get(PressedKeys.get(ix)).Handler(true);
+					Actions.get(PressedKeys.get(ix)).Handler.keyDown(true);
 			}
-		}*/
+		}
 	}
 
 	public void KeyDown(int key)
 	{
-		KeyPress(key);
-		PressedKeys.add(key);
+		if (!PressedKeys.contains(key))
+		{
+			KeyPress(key);
+			PressedKeys.add(key);
+		}
+
 	}
 
-	/*public void KeyUp(Sdl.SDL_KeyboardEvent e)
+	public void KeyUp(int key)
 	{
-		if (PressedKeys.Contains(e.keysym.sym))
+		if (PressedKeys.contains(key))
 		{
-			PressedKeys.Remove(e.keysym.sym);
-			if (Actions.ContainsKey(e.keysym.sym))
-				Actions[e.keysym.sym].Handler(false);
+			PressedKeys.remove(key);
+			if (Actions.containsKey(key))
+				Actions.get(key).Handler.keyDown(false);
 		}
-	}*/
+	}
 
 	protected void KeyPress(int key)
 	{
 		if (Engine.guiMain.KeyPress(key)) return;
-		//if (Actions.containsKey(key))
-		//	Actions.get(key).Handler(true);
+		if (Actions.containsKey(key)) Actions.get(key).Handler.keyDown(true);
 	}
 
 	public void OnMouseMove(int x, int y)
@@ -185,16 +201,15 @@ public class InputManager
 			//Right Click
 			if (button == InputManager.MB_RIGHT)
 			{
-				//@TODO: Fix me.
-				/*if (Interface.EditMode)
+				if (Interface.EditMode)
 				{
-					WTileEdit wnd = new WTileEdit(mbe.x, mbe.y);
-					Engine.guiMain.Insert(0, wnd);
+					WTileEdit wnd = new WTileEdit(x, y);
+					Engine.guiMain.add(0, wnd);
 				}
 				else if (Engine.araMain != null)
-				{*/
+				{
 					if (Engine.Player.Right != null) Engine.Player.Right.Use(x, y);
-				//}
+				}
 			}
 
 			//Wheel Up
@@ -221,23 +236,36 @@ public class InputManager
 		if (Engine.guiMain.MouseUp(x, y, button)) return;
 	}
 
-	private void Action_Move_Up(boolean down)
-	{
-		Engine.Player.AlterDir(Direction.North, down);
-	}
-
-	private void Action_Move_Left(boolean down)
-	{
-		Engine.Player.AlterDir(Direction.West, down);
-	}
-
-	private void Action_Move_Down(boolean down)
-	{
-		Engine.Player.AlterDir(Direction.South, down);
-	}
-
 	private void Action_Move_Right(boolean down)
 	{
-		Engine.Player.AlterDir(Direction.East, down);
+		
+	}
+
+	private class ActionUp implements KeyHandler
+	{
+		public void keyDown(boolean down) {
+			Engine.Player.AlterDir(Direction.North, down);
+		}
+	}
+
+	private class ActionLeft implements KeyHandler
+	{
+		public void keyDown(boolean down) {
+			Engine.Player.AlterDir(Direction.West, down);
+		}
+	}
+
+	private class ActionDown implements KeyHandler
+	{
+		public void keyDown(boolean down) {
+			Engine.Player.AlterDir(Direction.South, down);
+		}
+	}
+
+	private class ActionRight implements KeyHandler
+	{
+		public void keyDown(boolean down) {
+			Engine.Player.AlterDir(Direction.East, down);
+		}
 	}
 }

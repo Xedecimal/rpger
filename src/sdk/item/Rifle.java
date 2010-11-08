@@ -1,6 +1,8 @@
 package sdk.item;
 
 import java.awt.Point;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sdk.Engine;
 import sdk.types.Space;
 import sdk.types.VertexD;
@@ -23,8 +25,14 @@ public class Rifle extends Item
 		{
 			Point target = Engine.araMain.ScreenToArea(x, y);
 			VertexD source = new VertexD(owner.x, owner.y, owner.z);
-			// TODO: Fix me.
-			//Engine.araMain.ThrowEntity((Bullet)Activator.CreateInstance(m_clip.bullet.GetType()), source, target, 1000);
+			try {
+				Space.ThrowEntity(m_clip.bullet.getClass().newInstance(),
+					source, target, 1000);
+			} catch (InstantiationException ex) {
+				Logger.getLogger(Rifle.class.getName()).log(Level.SEVERE, null, ex);
+			} catch (IllegalAccessException ex) {
+				Logger.getLogger(Rifle.class.getName()).log(Level.SEVERE, null, ex);
+			}
 		}
 	}
 

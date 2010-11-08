@@ -27,7 +27,7 @@ public class Tile extends Entity
 	public boolean Destroying = false;
 	public double offset = 0;
 
-	public int Count() { return next != null ? next.Count() + 1 : 0; }
+	public int count() { return next != null ? next.count() + 1 : 0; }
 
 	public Tile(Space parent) { super(parent); }
 

@@ -1,6 +1,5 @@
 package client;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -8,8 +7,6 @@ import java.util.logging.Logger;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import sdk.Engine;
 import sdk.types.GameState;
@@ -40,20 +37,9 @@ public class Entry
 	 */
 	public Entry() throws IOException
 	{
-		Document doc = null;
-		File f = new File("config.xml");
-		if (f.exists())
-		{
-			DocumentBuilder db = null;
-			try {
-				doc = db.parse(f);
-			} catch (Exception ex) {
-				Logger.getLogger(Entry.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
-
+		Engine.initConfig();
 		Engine.InitInterface();
-		Engine.InitInput(doc);
+		Engine.InitInput(Engine.config);
 		Engine.InitRegions();
 		Engine.InitParticles();
 		Engine.InitGUI();

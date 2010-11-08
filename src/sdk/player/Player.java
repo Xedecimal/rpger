@@ -124,8 +124,8 @@ public class Player extends Entity
 				(int)y < Destination.y + vel &&
 				(int)y > Destination.y - vel)
 			{
-				Destination.x = Engine.r.nextInt(Space.w * 32);
-				Destination.y = Engine.r.nextInt(Space.h * 32);
+				Destination.x = Engine.r.nextInt(Space.w() * 32);
+				Destination.y = Engine.r.nextInt(Space.h() * 32);
 			}
 			else MoveTowards(Destination);
 		}

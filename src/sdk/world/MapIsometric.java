@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package sdk.world;
 
 import java.io.DataInputStream;
@@ -101,7 +96,7 @@ public class MapIsometric
 		{
 			Tile t = Tiles[ix];
 			t.Serialize(bw);
-			int count = Tiles[ix].Count();
+			int count = Tiles[ix].count();
 			for (int iy = 0; iy < count; iy++)
 			{
 				t = t.next;

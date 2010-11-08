@@ -1,6 +1,7 @@
 package sdk.gui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import sdk.Engine;
 import sdk.types.Rect;
 import sdk.types.RectD;
@@ -16,19 +17,12 @@ public class WButton extends TextWidget
 
 	public ArrayList<ClickHandler> OnClick;
 
-	/// <summary>
-	/// 
-	/// </summary>
-	/// <param name="r"></param>
-	/// <param name="text"></param>
-	/// <param name="e"></param>
 	/**
 	 * Create a TextWidget out of a rect (r), setting the initial text to the
 	 * parameter 'text' and a callback (e).
 	 * @param r The initial position and size of this widget.
 	 * @param text The initial text for this TextWidget.
 	 * @param e A callback for when the button is depressed.
-	 * @todo Fix delegates here.
 	 */
 	public WButton(Rect r, String text, ClickHandler e)
 	{
@@ -71,8 +65,11 @@ public class WButton extends TextWidget
 	{
 		if (buttons == 1 && this.ScreenRect().Contains(x, y))
 		{
-			//@TODO: Fix me.
-			//if (OnClick != null) OnClick(sender, true);
+			if (OnClick != null)
+			{
+				Iterator<ClickHandler> it = OnClick.iterator();
+				while (it.hasNext()) it.next().onClick(sender, true);
+			}
 			m_pressed = false;
 			return ClickResponse.Focus;
 		}

@@ -11,9 +11,10 @@ import java.util.List;
 public abstract class Space {
 	public List<Entity> Objects;
 
-	public int w;
-	public int h;
-	public int d;
+	public abstract int w();
+	public abstract int h();
+	public abstract int d();
+
 	public abstract ImpactResult CheckImpact(Entity source);
 
 	public Space() { Objects = new ArrayList<Entity>(); }

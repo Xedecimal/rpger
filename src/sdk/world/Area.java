@@ -171,7 +171,7 @@ public class Area extends Space
 		if (Map.InMap(tp.x - height, tp.y + height))
 		{
 			Tile t = Map.get(tp.x, tp.y);
-			return new Vertex(tp.x, tp.y, t.Count());
+			return new Vertex(tp.x, tp.y, t.count());
 		}
 
 		//Check height

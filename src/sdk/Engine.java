@@ -22,6 +22,7 @@ public class Engine {
 	public static GameState State = GameState.Login;
 	public static Player Player;
 
+	public static Config config;
 	public static Interface intMain;
 	public static ParticleEmitterCollection pecMain;
 	public static GUI guiMain;
@@ -41,6 +42,9 @@ public class Engine {
 	 */
 	public static boolean Running;
 
+	public static void initConfig() {
+		config = new Config("config.xml");
+	}
 	public static void InitInterface() throws IOException
 	{
 		intMain = new Interface();
@@ -54,7 +58,7 @@ public class Engine {
 	public static void InitGUI() { guiMain = new GUI(); }
 	//public static void InitNetwork(Document config) { netMain = new RPNetNode(config); }
 	public static void InitRegions() { regMain = new RegionManager(); }
-	public static void InitInput(Document config) { inpMain = new InputManager(config); }
+	public static void InitInput(Config config) { inpMain = new InputManager(config); }
 
 	/**
 	 * Simulates a single frame.
