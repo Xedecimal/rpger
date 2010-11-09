@@ -1,8 +1,7 @@
 package sdk.world;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import sdk.Engine;
 import sdk.types.RPoint;
 import sdk.types.RectD;
@@ -65,42 +64,41 @@ public class MapIsometric
 		YTO = TileHeight / 4;
 	}
 
-	public MapIsometric(Space space, DataInputStream br) throws IOException
+	public MapIsometric(Space space, ByteBuffer bb) throws IOException
 	{
 		Marker = new RPoint();
 
 		XTO = TileWidth / 2;
 		YTO = TileHeight / 4;
 
-		Width = br.readInt();
-		Height = br.readInt();
+		Width = bb.getInt();
+		Height = bb.getInt();
 		Tiles = new Tile[Width*Height];
 		System.out.println("Loaded map, Width (" + Width + ") Height (" + Height + ")");
-		for (int ix = 0; ix < Width * Height; ix++)
+		for (int ix = 0; ix < Width; ix++)
 		{
-			int count = br.readInt();
-			Tile t = new Tile(space, br);
-			for (int iy = 0; iy < count; iy++)
+			for (int iy = 0; iy < Height; iy++)
 			{
-				t.next = new Tile(space, br);
-				t = t.next;
+				int count = bb.getInt();
+				Tile t = new Tile(space, bb);
+				Tiles[ix+(Width * iy)] = t;
 			}
 		}
 	}
 
-	public void Serialize(DataOutputStream bw) throws IOException
+	public void Serialize(ByteBuffer bb) throws IOException
 	{
-		bw.write(Width);
-		bw.write(Height);
+		bb.putInt(Width);
+		bb.putInt(Height);
 		for (int ix = 0; ix < Width * Height; ix++)
 		{
 			Tile t = Tiles[ix];
-			t.Serialize(bw);
+			t.Serialize(bb);
 			int count = Tiles[ix].count();
 			for (int iy = 0; iy < count; iy++)
 			{
 				t = t.next;
-				t.Serialize(bw);
+				t.Serialize(bb);
 			}
 		}
 	}

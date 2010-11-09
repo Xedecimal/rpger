@@ -9,9 +9,6 @@
 		<!-- <bind key="51" hold="false" action="JUMP" /> -->
 		<!-- <bind key="126" hold="false" action="CONSOLE" /> -->
 	</input>
-	<network>
-		<gateway host="xedecimal.net" port="38432" />
-	</network>
 </configuration>
 
 <!-- Hold can be Press (false) / Hold (true) -->

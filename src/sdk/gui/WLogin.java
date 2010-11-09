@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sdk.Engine;
-import sdk.net.RPNetNode.BrowseResultHandler;
+import sdk.net.Client.BrowseResultHandler;
 import sdk.types.Rect;
 
 /**
@@ -40,14 +40,14 @@ public class WLogin extends WWindow
 		Add(lbServ);
 		Add(new WButton (new Rect(0,   316, 90,  16), "Connect", new ButConnect()));
 
-		Engine.netMain.OnBrowseResult = new BrowseResult();
+		//Engine.netMain.OnBrowseResult = new BrowseResult();
 	}
 
 	private class ButSearch implements ClickHandler
 	{
 		public void onClick(Object sender, boolean state)
 		{
-			try
+			/*try
 			{
 				if (!Engine.netMain.Browse(ebHost.Text, 29838))
 				{
@@ -57,7 +57,7 @@ public class WLogin extends WWindow
 			catch (IOException ex)
 			{
 				Logger.getLogger(WLogin.class.getName()).log(Level.SEVERE, null, ex);
-			}
+			}*/
 		}
 	}
 
@@ -71,7 +71,7 @@ public class WLogin extends WWindow
 	private class ButConnect implements ClickHandler
 	{
 		public void onClick(Object sender, boolean state) {
-			String item = (String)lbServ.Items.get(lbServ.Selected);
+			/*String item = (String)lbServ.Items.get(lbServ.Selected);
 
 			System.out.println("Connecting to: " + item);
 
@@ -80,7 +80,7 @@ public class WLogin extends WWindow
 				Engine.guiMain.MessageBox("Error connecting,\ncheck the host.");
 				return;
 			}
-			Engine.guiMain.RemoveWidget((Widget)sender);
+			Engine.guiMain.RemoveWidget((Widget)sender);*/
 		}
 	}
 

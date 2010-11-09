@@ -117,7 +117,7 @@ public class Interface
 		}
 	}
 
-	public void Start()
+	public void Start() throws IOException
 	{
 		Engine.Running = true;
 		while (Engine.Running)

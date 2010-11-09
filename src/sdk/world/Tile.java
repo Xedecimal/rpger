@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import sdk.Engine;
 import sdk.types.Entity;
 import sdk.types.RPointD;
@@ -38,17 +39,18 @@ public class Tile extends Entity
 		this.Block = block;
 	}
 
-	public Tile(Space parent, DataInputStream r) throws IOException
+	public Tile(Space parent, ByteBuffer bb) throws IOException
 	{
 		this(parent);
-		ID = r.readShort();
-		Block = r.readBoolean();
+		ID = bb.getShort();
+		Block = bb.get() == 1;
 	}
 
-	public void Serialize(DataOutputStream w) throws IOException
+	public void Serialize(ByteBuffer bb) throws IOException
 	{
-		w.writeShort(ID);
-		w.writeBoolean(Block);
+		bb.putInt(count());
+		bb.putShort(ID);
+		bb.put((byte)(Block ? 1 : 0));
 	}
 
 	public void Draw(RegionSet rs, RectD rdst, double zorder)

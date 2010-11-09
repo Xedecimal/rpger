@@ -9,7 +9,7 @@ import sdk.types.GameState;
 import sdk.types.Interface;
 import sdk.types.RegionManager;
 import sdk.gui.GUI;
-import sdk.net.RPNetNode;
+import sdk.net.NetManager;
 import sdk.types.particle.ParticleEmitterCollection;
 import sdk.player.Player;
 import sdk.world.Area;
@@ -29,7 +29,7 @@ public class Engine {
 	public static ParticleEmitterCollection pecMain;
 	public static GUI guiMain;
 	public static Area araMain;
-	public static RPNetNode netMain;
+	public static NetManager netMain;
 	public static RegionManager regMain;
 	public static InputManager inpMain;
 	public static float Delta;
@@ -54,18 +54,19 @@ public class Engine {
 	}
 	public static void InitWorld() throws IOException
 	{
-		araMain = new Area(50, 50);
+		araMain = new Area(25, 50);
 	}
 	public static void InitParticles() { pecMain = new ParticleEmitterCollection(); }
 	public static void InitGUI() { guiMain = new GUI(); }
-	public static void InitNetwork(Config config) { netMain = new RPNetNode(config); }
+	public static void InitNetwork() throws IOException
+	{ netMain = new NetManager(); }
 	public static void InitRegions() { regMain = new RegionManager(); }
 	public static void InitInput(Config config) { inpMain = new InputManager(config); }
 
 	/**
 	 * Simulates a single frame.
 	 */
-	public static void Update()
+	public static void Update() throws IOException
 	{
 		m_curTime = Calendar.getInstance().getTimeInMillis();
 		if (m_deltaTime / 1000 != m_curTime / 1000)
@@ -78,6 +79,9 @@ public class Engine {
 		Interface.Clear();
 		int offx = (int)intMain.CameraX;
 		int offy = (int)intMain.CameraY;
+
+		netMain.Update();
+
 		if (State == GameState.Login)
 		{
 			inpMain.Update();

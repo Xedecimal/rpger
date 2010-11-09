@@ -3,10 +3,9 @@ package sdk.world;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.util.Calendar;
 import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
@@ -83,15 +82,15 @@ public class Area extends Space
 		Server = true;
 	}
 
-	public Area(DataInputStream br) throws IOException
+	public Area(ByteBuffer bb) throws IOException
 	{
 		this();
-		Map = new MapIsometric(this, br);
+		Map = new MapIsometric(this, bb);
 	}
 
-	public void Serialize(DataOutputStream bw) throws IOException
+	public void Serialize(ByteBuffer bb) throws IOException
 	{
-		Map.Serialize(bw);
+		Map.Serialize(bb);
 	}
 
 	public void Update(int offx, int offy)
