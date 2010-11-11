@@ -30,8 +30,6 @@ public class Interface
 	private static int m_fntBase;
 	private static Texture m_texFont;
 
-	private RegionSet m_rsMap;
-
 	/** View offset, for dynamic camera movement around a fixed point
 	 * (ViewPoint)
 	 */
@@ -84,7 +82,6 @@ public class Interface
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		LoadFont("img/font.png");
-		m_rsMap = new RegionSet("tiles");
 	}
 
 	void setDisplay(int w, int h)
@@ -194,7 +191,9 @@ public class Interface
 		System.out.println("Loading texture: "+ref);
 
 		try {
-			Texture t = TextureLoader.getTexture("PNG", new FileInputStream(ref));
+			FileInputStream fis = new FileInputStream(ref);
+			Texture t = TextureLoader.getTexture("PNG", fis);
+			fis.close();
 			m_textures.put(ref, t);
 			return t;
 		} catch (Exception ex) {

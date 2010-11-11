@@ -29,13 +29,19 @@ public class WTileEdit extends WWindow
 		imgTile = new WImage(new Rect(16, 16, 64, 64), m_rs.Texture, m_rs.get(m_tile.ID));
 		Add(imgTile);
 
-		lblHeight = new WLabel(new Rect(16, 70, 100, 18), "Count: " + m_tile.count());
+		lblHeight = new WLabel(new Rect(16, 70, 100, 18));
 		Add(lblHeight);
+		updateHeight();
 
 		Add(new WButton(new Rect(Width-150,  0, 90, 16), "Next", new ButAdd()));
 		Add(new WButton(new Rect(Width-150, 20, 90, 16), "Previous", new ButSub()));
 		Add(new WButton(new Rect(Width-150, 40, 90, 16), "Up", new ButUp()));
 		Add(new WButton(new Rect(Width-150, 60, 90, 16), "Down", new ButDown()));
+	}
+
+	private void updateHeight()
+	{
+		lblHeight.Text = "Count: " + m_tile.count();
 	}
 
 	private class ButAdd implements ClickHandler
@@ -61,6 +67,7 @@ public class WTileEdit extends WWindow
 	{
 		public void onClick(Object sender, boolean state) {
 			m_tile.Push(new Tile(Engine.araMain, m_tile.ID, false));
+			updateHeight();
 		}
 	}
 
@@ -68,6 +75,7 @@ public class WTileEdit extends WWindow
 	{
 		public void onClick(Object sender, boolean state) {
 			m_tile.Pop();
+			updateHeight();
 		}
 	}
 }

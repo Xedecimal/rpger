@@ -14,7 +14,6 @@ import sdk.types.RegionSet;
 public class WImage extends Widget
 {
 	Texture m_tex;
-	RectD m_reg;
 
 	public int Texture;
 	public RectD Reg;
@@ -25,13 +24,13 @@ public class WImage extends Widget
 	{
 		super(r);
 		m_tex = tex;
-		m_reg = reg;
+		Reg = reg;
 	}
 
 	@Override
 	public void Render(int offx, int offy, RegionSet RS)
 	{
 		GL11.glLoadIdentity();
-		Interface.Draw(m_tex, m_reg, new RectD(offx+X, offy+Y, Width, Height), 1);
+		Interface.Draw(m_tex, Reg, new RectD(offx+X, offy+Y, Width, Height), 1);
 	}
 }

@@ -107,7 +107,7 @@ public class MapIsometric
 	{
 		for (int ix = 0; ix < Width; ix++)
 			for (int iy = 0; iy < Height; iy++)
-				this.get(ix, iy).ID = (short)Engine.r.nextInt(5);
+				this.get(ix, iy).ID = (short)Engine.r.nextInt(15);
 	}
 
 	/**
