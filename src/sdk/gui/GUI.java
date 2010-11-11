@@ -41,6 +41,7 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 		m_dragging = false;
 		Focus = null;
 		RS = new RegionSet("GUISet");
+		add(new WHudHP(new Rect(0, 0, 20, 20)));
 	}
 
 	/**

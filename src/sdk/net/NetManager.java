@@ -13,25 +13,50 @@ public class NetManager
 	Server m_server;
 	Client m_client;
 
+	public static ByteBuffer BBI;
+	public static ByteBuffer BBO;
+
+	//private final Peer m_peer;
+
 	public NetManager() throws IOException
 	{
+		BBI = ByteBuffer.allocateDirect(16384);
+		BBO = ByteBuffer.allocateDirect(16384);
+
+		/*
+		TODO: Make this work some day.
+
+		// Make our multicaster.
+		
+		m_peer = new Peer();
+
+		// Multicast for a remote server.
+
+		String rserver = null;
+		if ((rserver = m_peer.Search()) != null)
+		{
+			System.out.println("Found one!");
+		}
+		*/
+
+		// Make our own server.
 		m_server = new Server();
 		m_server.Listen(29838);
+
 		m_client = new Client();
 		m_client.Connect("rpger://localhost:29838");
 	}
 
 	public void Update() throws IOException
 	{
+		//m_peer.Update();
 		m_server.Update();
 		m_client.Update();
 	}
 
 	static void Send(SocketChannel sc, ByteBuffer bb) throws IOException
 	{
-		System.out.println("ServerClient::Send");
 		ByteBuffer bbOut = ByteBuffer.allocateDirect(bb.limit()+4);
-		System.out.println("Size out: "+bb.limit());
 		bbOut.putInt(bb.limit());
 		bbOut.put(bb);
 		bbOut.flip();

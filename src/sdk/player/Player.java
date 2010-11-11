@@ -50,7 +50,7 @@ public class Player extends Entity
 	public Item setLeft(Item i) { m_left = i; i.owner = this; return i; }
 	public Item setRight(Item i) { m_right = i; i.owner = this; return i; }
 
-	//public event DirChangeHandler OnDirChange;
+	public DirChangeNotifier onDirChange;
 
 	public Player(Space space)
 	{
@@ -138,6 +138,7 @@ public class Player extends Entity
 		if (add) Dir |= dd;
 		else Dir ^= dd;
 		SetVisibleDir();
+		if (onDirChange != null) onDirChange.dirChange(this, Dir);
 	}
 
 	private void SetVisibleDir()
@@ -154,9 +155,9 @@ public class Player extends Entity
 
 	public void SetDir(int d)
 	{
-		//if (Dir != d && OnDirChange != null) OnDirChange(this, d);
 		Dir = d;
 		SetVisibleDir();
+		if (onDirChange != null) onDirChange.dirChange(this, d);
 	}
 
 	public void MoveTowards(RPoint pDst)
@@ -200,5 +201,10 @@ public class Player extends Entity
 			Engine.m_debug = ((Double)XMid()).toString();
 			Engine.intMain.DrawText(Name, (int)rdst.x - (Name.length() / 2), (int)rdst.y - 16);
 		}
+	}
+
+	public interface DirChangeNotifier
+	{
+		public void dirChange(Player p, int dir);
 	}
 }

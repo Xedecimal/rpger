@@ -7,12 +7,14 @@ import org.lwjgl.input.Mouse;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import sdk.ActionKey;
-import sdk.Config;
 import sdk.Engine;
+import sdk.gui.EnterHandler;
+import sdk.gui.WEditBox;
 import sdk.gui.WTileEdit;
 import sdk.item.Item;
 import sdk.types.Entity;
 import sdk.types.Interface;
+import sdk.types.Rect;
 import sdk.world.Tile;
 
 /**
@@ -36,13 +38,13 @@ public class InputManager
 	public int MouseX;
 	public int MouseY;
 
-	public InputManager(Config config)
+	public InputManager()
 	{
 		Actions = new HashMap<Integer, ActionKey>();
 		PressedKeys = new ArrayList<Integer>();
 		Buts = new boolean[6];
 
-		NodeList nl = config.get("/configuration/input/bind");
+		NodeList nl = Engine.config.get("/configuration/input/bind");
 		for (int ix = 0; ix < nl.getLength(); ix++)
 		{
 			Node n = nl.item(ix);
@@ -94,6 +96,9 @@ public class InputManager
 				case MOVE_RIGHT:
 					Actions.put(key, new ActionKey(new ActionRight(), hold));
 					break;
+				case CONSOLE:
+					Actions.put(key, new ActionKey(new ActionConsole(), hold));
+					break;
 			}
 		}
 	}
@@ -106,7 +111,7 @@ public class InputManager
 			if (Keyboard.getEventKeyState())
 			{
 				KeyDown(key);
-				KeyPress(Keyboard.getEventCharacter());
+				KeyPress(Keyboard.getEventKey(), Keyboard.getEventCharacter());
 			}
 			else
 				KeyUp(key);
@@ -141,16 +146,17 @@ public class InputManager
 			if (Actions.containsKey(PressedKeys.get(ix)))
 			{
 				if (Actions.get(PressedKeys.get(ix)).Hold)
-					Actions.get(PressedKeys.get(ix)).Handler.keyDown(true);
+					Actions.get(PressedKeys.get(ix)).Handler.keyDown();
 			}
 		}
 	}
 
 	public void KeyDown(int key)
 	{
+		//System.out.println("Keydown: "+key);
 		if (!PressedKeys.contains(key))
 			PressedKeys.add(key);
-		if (Actions.containsKey(key)) Actions.get(key).Handler.keyDown(true);
+		if (Actions.containsKey(key)) Actions.get(key).Handler.keyDown();
 	}
 
 	public void KeyUp(int key)
@@ -159,13 +165,15 @@ public class InputManager
 		{
 			PressedKeys.remove(PressedKeys.indexOf(key));
 			if (Actions.containsKey(key))
-				Actions.get(key).Handler.keyDown(false);
+				Actions.get(key).Handler.keyUp();
 		}
 	}
 
-	protected void KeyPress(char key)
+	protected void KeyPress(int key, char chr)
 	{
-		if (Engine.guiMain.KeyPress(key)) return;
+		if (Engine.guiMain.KeyPress(chr)) return;
+		if (Actions.containsKey(key))
+			Actions.get(key).Handler.keyPress(key, chr);
 	}
 
 	public void OnMouseMove(int x, int y)
@@ -239,39 +247,89 @@ public class InputManager
 		if (Engine.guiMain.MouseUp(x, y, button)) return;
 	}
 
-	private class ActionUp implements KeyHandler
+	private class ActionUp extends KeyHandler
 	{
-		public void keyDown(boolean down)
+		@Override
+		public void keyDown()
 		{
 			if (Engine.Player != null)
-				Engine.Player.AlterDir(Entity.DIR_N, down);
+				Engine.Player.AlterDir(Entity.DIR_N, true);
+		}
+
+		@Override
+		public void keyUp()
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_N, false);
 		}
 	}
 
-	private class ActionLeft implements KeyHandler
+	private class ActionLeft extends KeyHandler
 	{
-		public void keyDown(boolean down)
+		@Override
+		public void keyDown()
 		{
 			if (Engine.Player != null)
-				Engine.Player.AlterDir(Entity.DIR_W, down);
+				Engine.Player.AlterDir(Entity.DIR_W, true);
+		}
+
+		@Override
+		public void keyUp()
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_W, false);
 		}
 	}
 
-	private class ActionDown implements KeyHandler
+	private class ActionDown extends KeyHandler
 	{
-		public void keyDown(boolean down)
+		@Override
+		public void keyDown()
 		{
 			if (Engine.Player != null)
-				Engine.Player.AlterDir(Entity.DIR_S, down);
+				Engine.Player.AlterDir(Entity.DIR_S, true);
+		}
+
+		@Override
+		public void keyUp()
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_S, false);
 		}
 	}
 
-	private class ActionRight implements KeyHandler
+	private class ActionRight extends KeyHandler
 	{
-		public void keyDown(boolean down)
+		@Override
+		public void keyDown()
 		{
 			if (Engine.Player != null)
-				Engine.Player.AlterDir(Entity.DIR_E, down);
+				Engine.Player.AlterDir(Entity.DIR_E, true);
+		}
+
+		@Override
+		public void keyUp()
+		{
+			if (Engine.Player != null)
+				Engine.Player.AlterDir(Entity.DIR_E, false);
+		}
+	}
+
+	private class ActionConsole extends KeyHandler
+	{
+		@Override
+		public void keyUp()
+		{
+			WEditBox eb = new WEditBox(new Rect(50, 50, 100, 16), "Poop!");
+			eb.onEnter = new ConsoleEnterHandler();
+			Engine.guiMain.add(eb);
+		}
+	}
+
+	public class ConsoleEnterHandler implements EnterHandler
+	{
+		public void onEnter(String text)
+		{
 		}
 	}
 }

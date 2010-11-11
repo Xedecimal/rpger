@@ -13,6 +13,7 @@ import sdk.types.RegionSet;
 public class WEditBox extends TextWidget
 {
 	public boolean Masked;
+	public EnterHandler onEnter;
 
 	public WEditBox() { super(); }
 	public WEditBox(Rect r) { super(r); }
@@ -52,6 +53,7 @@ public class WEditBox extends TextWidget
 					Text = Text.substring(0, Text.length() - 1);
 				break;
 			case 13: //Enter
+				if (onEnter != null) onEnter.onEnter(Text);
 				break;
 			default: //Readable
 				Text += key;

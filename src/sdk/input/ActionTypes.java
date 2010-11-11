@@ -10,4 +10,5 @@ public enum ActionTypes
 	MOVE_UP,
 	MOVE_RIGHT,
 	MOVE_DOWN,
+	CONSOLE
 }

@@ -5,15 +5,17 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import sdk.Engine;
 import sdk.player.Player;
+import sdk.player.Player.DirChangeNotifier;
 import sdk.player.PlayerType;
 import sdk.types.GameState;
 import sdk.world.Area;
@@ -38,8 +40,6 @@ public class Client
 	public boolean Connected = false;
 
 	public BrowseResultHandler OnBrowseResult;
-
-	//public event DataReadHandler OnDataRead;
 
 	public Client()
 	{
@@ -95,25 +95,6 @@ public class Client
 		}
 		return false; // Couldn't process URL.
 	}
-
-	/*private void m_client_readhead(IAsyncResult ar)
-	{
-		int read = 0;
-		read = m_sock_gateway.EndReceive(ar);
-
-		//Attach memorystream and binaryreader to the client buffer
-		long size = BitConverter.ToInt64(cin, 0);
-		System.out.println("--- Packet Head (" + size + ") --------------------------");
-
-		cin = new byte[size];
-		m_sock_gateway.BeginReceive(cin, 0, cin.Length, SocketFlags.None,
-			new AsyncCallback(m_client_readchunk), this);
-	}*/
-
-	/*public void m_client_readchunk(IAsyncResult ar)
-	{
-
-	}*/
 
 	public void Send()
 	{
@@ -172,8 +153,12 @@ public class Client
 	public void onRead(SelectionKey sk) throws IOException
 	{
 		SocketChannel sc = (SocketChannel)sk.channel();
-		ByteBuffer data = ByteBuffer.allocateDirect(16384);
-		int read = sc.read(data);
+
+		NetManager.BBI.clear();
+		NetManager.BBO.clear();
+		int read = sc.read(NetManager.BBI);
+		NetManager.BBI.flip();
+
 		if (read < 4)
 		{
 			Engine.guiMain.MessageBox("Read smaller size than packet head.");
@@ -182,34 +167,29 @@ public class Client
 
 		System.out.println("chunk size: " + read);
 
-		data.flip();
-		int size = data.getInt();
-		System.out.println("Total size: "+size);
-		int type = data.getInt();
-		System.out.println("type: " + type);
-		//if (OnDataRead != null) OnDataRead(t, ms);
-
-		ByteBuffer bbOut = ByteBuffer.allocateDirect(16384);
+		int size = NetManager.BBI.getInt();
+		int type = NetManager.BBI.getInt();
 
 		switch (type)
 		{
 			case NetManager.PS_PROVIDE_USERNAME:
-				bbOut.putInt(NetManager.PS_USERNAME);
-				bbOut.put(Engine.cs.encode(m_user));
-				bbOut.flip();
-				NetManager.Send(sc, bbOut);
+				NetManager.BBO.putInt(NetManager.PS_USERNAME);
+				NetManager.BBO.put(Engine.cs.encode(m_user));
+				NetManager.BBO.flip();
+				NetManager.Send(sc, NetManager.BBO);
 				break;
 			case NetManager.PS_ProvidePassword:
-				bbOut.putInt(NetManager.PS_Password);
-				bbOut.put(Engine.cs.encode(m_pass));
-				bbOut.flip();
-				NetManager.Send(sc, bbOut);
+				NetManager.BBO.putInt(NetManager.PS_Password);
+				NetManager.BBO.put(Engine.cs.encode(m_pass));
+				NetManager.BBO.flip();
+				NetManager.Send(sc, NetManager.BBO);
 				break;
 			case NetManager.PS_Area:
-				Engine.araMain = new Area(data);
+				Engine.araMain = new Area(NetManager.BBI);
 				Engine.State = GameState.Active;
 				Engine.pecMain.clear();
 
+				//TODO: Dont' do this here.
 				// Configure Local Player
 				Player plrClient = new Player("Local User",
 					PlayerType.Controlled, true, Engine.araMain);
@@ -218,18 +198,19 @@ public class Client
 				plrClient.ST = 100;
 				plrClient.STMax = 100;
 				plrClient.Move(0, 0, 5);
+				plrClient.onDirChange = new DirChangeHandler();
 				Engine.Player = plrClient;
 				Engine.araMain.AddObject(plrClient);
 
-				bbOut.putInt(NetManager.PS_GotArea);
-				bbOut.flip();
-				NetManager.Send(sc, bbOut);
+				NetManager.BBO.putInt(NetManager.PS_GotArea);
+				NetManager.BBO.flip();
+				NetManager.Send(sc, NetManager.BBO);
 				break;
 			case NetManager.PS_MoveState:
-				int id = data.getInt();
-				int dir = data.getInt();
-				float xp = data.getFloat();
-				float yp = data.getFloat();
+				int id = NetManager.BBI.getInt();
+				int dir = NetManager.BBI.getInt();
+				float xp = NetManager.BBI.getFloat();
+				float yp = NetManager.BBI.getFloat();
 				//Engine.mapMain.Players[id].Dir = dir;
 				//Engine.araMain.Players[id].Pos.x = xp;
 				//Engine.araMain.Players[id].Pos.y = yp;
@@ -241,5 +222,23 @@ public class Client
 	public interface BrowseResultHandler
 	{
 		public void onResult(String url);
+	}
+
+	private class DirChangeHandler implements DirChangeNotifier
+	{
+		public void dirChange(Player p, int dir)
+		{
+			NetManager.BBO.clear();
+			NetManager.BBO.putInt(NetManager.PS_MoveState);
+			NetManager.BBO.putInt(p.ID);
+			NetManager.BBO.putInt(p.Dir);
+			NetManager.BBO.putDouble(p.x);
+			NetManager.BBO.putDouble(p.y);
+			NetManager.BBO.flip();
+			try { NetManager.Send(m_sc, NetManager.BBO); }
+			catch (IOException ex) {
+				Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
 	}
 }

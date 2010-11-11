@@ -61,7 +61,7 @@ public class Engine {
 	public static void InitNetwork() throws IOException
 	{ netMain = new NetManager(); }
 	public static void InitRegions() { regMain = new RegionManager(); }
-	public static void InitInput(Config config) { inpMain = new InputManager(config); }
+	public static void InitInput() { inpMain = new InputManager(); }
 
 	/**
 	 * Simulates a single frame.

@@ -39,7 +39,7 @@ public class Entry
 	{
 		Engine.initConfig();
 		Engine.InitInterface();
-		Engine.InitInput(Engine.config);
+		Engine.InitInput();
 		Engine.InitRegions();
 		Engine.InitParticles();
 		Engine.InitGUI();
