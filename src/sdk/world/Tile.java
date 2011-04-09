@@ -22,6 +22,9 @@ import sdk.types.particle.ParticleFilterRotate;
 public class Tile extends Entity
 {
 	public short ID;
+	/**
+	 * Link to the tile that is above this one.
+	 */
 	public Tile next;
 	public boolean Block, Destroyed;
 	public int Tolerance = 30;

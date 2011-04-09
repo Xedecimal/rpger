@@ -28,7 +28,7 @@ public class Player extends Entity
 		PLAYER_NW_0, PLAYER_NW_1, PLAYER_NW_2, PLAYER_NW_3, PLAYER_NW_4, PLAYER_NW_5, PLAYER_NW_6, PLAYER_NW_7
 	}
 
-	private String m_regname;
+	//private String m_regname;
 	private int m_visibledir;
 	private RegionSet m_rs;
 	public float m_frame, m_animspeed;
@@ -36,7 +36,7 @@ public class Player extends Entity
 	public PlayerType Type;
 	public RPoint Destination;
 	public int ID, HP, HPMax, ST, STMax;
-	private Space m_space;
+	//private Space m_space;
 
 	//Inventory
 
@@ -56,7 +56,7 @@ public class Player extends Entity
 	{
 		super(space);
 		m_rs = Engine.regMain.GetRegions("player");
-		m_space = space;
+		//m_space = space;
 	}
 
 	public Player(String name, PlayerType type, boolean load, Space parent)
@@ -73,7 +73,7 @@ public class Player extends Entity
 		ID = 0;
 		Name = name;
 		Type = type;
-		m_regname = "player";
+		//m_regname = "player";
 		Destination = new RPoint();
 		Dir = Entity.DIR_NONE;
 	}

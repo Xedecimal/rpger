@@ -1,6 +1,5 @@
 package sdk.types;
 
-import java.util.EnumSet;
 import sdk.Engine;
 
 /**

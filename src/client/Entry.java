@@ -24,16 +24,20 @@ public class Entry
 	/** Main script engine, initially executes scripts/AutoExec.cs. */
 	public ScriptEngineManager SEM;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) throws IOException, SAXException
+	/**
+	 * @param args the command line arguments
+	 * @throws IOException
+	 * @throws SAXException
+	 */
+	public static void main(String[] args) throws IOException, SAXException
 	{
 		Entry e = new Entry();
 	}
 
 	/**
 	 * Client's initialization begins here.
+	 *
+	 * @throws IOException
 	 */
 	public Entry() throws IOException
 	{

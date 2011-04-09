@@ -42,13 +42,13 @@ public class Area extends Space
 
 	public boolean Server = false;
 
-	private final int MAX_HEIGHT = 10;
-	private Vertex m_marker;
+	//private final int MAX_HEIGHT = 10;
+	//private Vertex m_marker;
 	private BufferedImage m_mousemap;
 
 	//Objects
 	private Calendar m_deltaTime;
-	private float m_delta;
+	//private float m_delta;
 
 	public static int XTO;
 	public static int YTO;
@@ -64,7 +64,7 @@ public class Area extends Space
 		YTO = m_th / 4;
 		//YTO = 16;
 		//ViewPort = new Point();
-		m_marker = new Vertex();
+		//m_marker = new Vertex();
 		m_mousemap = ImageIO.read(new File("img/mousemap.png"));
 		Emitters = new ParticleEmitterCollection();
 	}
@@ -95,7 +95,7 @@ public class Area extends Space
 
 	public void Update(int offx, int offy)
 	{
-		m_delta = (Calendar.getInstance().getTimeInMillis() - m_deltaTime.getTimeInMillis()) / 1000;
+		//m_delta = (Calendar.getInstance().getTimeInMillis() - m_deltaTime.getTimeInMillis()) / 1000;
 		for (int ix = Objects.size() - 1; ix > -1; ix--)
 		{
 			Entity e = Objects.get(ix);
