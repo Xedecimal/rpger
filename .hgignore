@@ -2,3 +2,4 @@ glob:nbproject/private/*
 glob:build/classes/*
 syntax: glob
 dist/*
+lib/*

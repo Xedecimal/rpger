@@ -95,7 +95,8 @@ public class Area extends Space
 
 	public void Update(int offx, int offy)
 	{
-		//m_delta = (Calendar.getInstance().getTimeInMillis() - m_deltaTime.getTimeInMillis()) / 1000;
+		//m_delta = (Calendar.getInstance().getTimeInMillis() -
+		//	m_deltaTime.getTimeInMillis()) / 1000;
 		for (int ix = Objects.size() - 1; ix > -1; ix--)
 		{
 			Entity e = Objects.get(ix);
