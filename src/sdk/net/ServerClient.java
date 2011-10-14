@@ -64,7 +64,7 @@ public class ServerClient {
 		int size = bbIn.getInt();
 		int type = bbIn.getInt();
 
-		ByteBuffer bbOut = ByteBuffer.allocateDirect(16384);
+		ByteBuffer bbOut = ByteBuffer.allocateDirect(64*64*64*2);
 
 		switch (type)
 		{

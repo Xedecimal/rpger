@@ -20,14 +20,13 @@ public class NetManager
 
 	public NetManager() throws IOException
 	{
-		BBI = ByteBuffer.allocateDirect(16384);
-		BBO = ByteBuffer.allocateDirect(16384);
+		BBI = ByteBuffer.allocateDirect(64*64*64*2);
+		BBO = ByteBuffer.allocateDirect(64*64*64*2);
 
-		/*
-		TODO: Make this work some day.
+		/*TODO: Make this work some day.
 
 		// Make our multicaster.
-		
+
 		m_peer = new Peer();
 
 		// Multicast for a remote server.
@@ -44,7 +43,7 @@ public class NetManager
 		m_server.Listen(29838);
 
 		m_client = new Client();
-		m_client.Connect("rpger://localhost:29838");
+		//m_client.Connect("rpger://localhost:29838");
 	}
 
 	public void Update() throws IOException

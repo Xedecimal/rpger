@@ -9,8 +9,6 @@ import sdk.types.RegionSet;
 /**
  * The main GUI handler, managing widgets and all it's derived objects.
  * @author Xedecimal
- * @todo Don't modify the Rect when using -1 and -2, allowing constant dynamic
- * resizing.
  */
 public class GUI extends ArrayList<Widget> implements ClickHandler {
 	private boolean m_dragging;
@@ -50,7 +48,7 @@ public class GUI extends ArrayList<Widget> implements ClickHandler {
 	public void Render()
 	{
 		ListIterator<Widget> li = listIterator(size());
-		while (li.hasPrevious()) 
+		while (li.hasPrevious())
 			li.previous().Render(RS);
 	}
 

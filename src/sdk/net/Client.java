@@ -165,8 +165,6 @@ public class Client
 			return;
 		}
 
-		System.out.println("chunk size: " + read);
-
 		int size = NetManager.BBI.getInt();
 		int type = NetManager.BBI.getInt();
 

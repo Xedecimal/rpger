@@ -1,8 +1,6 @@
 package sdk.world;
 
 import java.awt.Point;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import sdk.Engine;

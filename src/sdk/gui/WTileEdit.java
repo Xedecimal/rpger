@@ -41,7 +41,7 @@ public class WTileEdit extends WWindow
 
 	private void updateHeight()
 	{
-		lblHeight.Text = "Count: " + m_tile.count();
+		lblHeight.Text = "Count FIXME!";
 	}
 
 	private class ButAdd implements ClickHandler

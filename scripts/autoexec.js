@@ -9,7 +9,7 @@ var ch_file_sp = new ClickHandler() {
 	onClick: function () {
 		Engine.State = GameState.Active;
 		Engine.pecMain.clear();
-		Engine.araMain = new Area(50, 100);
+		Engine.araMain = new Area(50, 100, 10);
 		var plrClient = new Player("Local User", PlayerType.Controlled, true, Engine.araMain);
 		plrClient.HP = 100;
 		plrClient.HPMax = 100;

@@ -54,7 +54,7 @@ public class Engine {
 	}
 	public static void InitWorld() throws IOException
 	{
-		araMain = new Area(25, 50);
+		araMain = new Area(25, 50, 50);
 	}
 	public static void InitParticles() { pecMain = new ParticleEmitterCollection(); }
 	public static void InitGUI() { guiMain = new GUI(); }

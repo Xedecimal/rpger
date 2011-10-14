@@ -2,6 +2,7 @@ package sdk.world;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import org.newdawn.slick.util.Log;
 import sdk.Engine;
 import sdk.types.RPoint;
 import sdk.types.RectD;
@@ -34,7 +35,7 @@ public class MapIsometric
 	public Tile get(int x, int y) { return Tiles[x + (y * Width)]; }
 	public Tile get(int x, int y, int z) { return Tiles[x + (y * Width)].GetStack(z); }
 
-	public MapIsometric(Space parent, int width, int height)
+	public MapIsometric(Space parent, int width, int height, int depth)
 	{
 		Marker = new RPoint();
 		Width = width;
@@ -46,17 +47,19 @@ public class MapIsometric
 		{
 			for (int iy = 0; iy < height; iy++)
 			{
-				//Tiles[id] = new Tile(parent, (ushort)Engine.r.Next(5), false);
-				Tiles[id] = new Tile(parent, (short)0, false);
+				Tile t = new Tile(parent, (short)0, false);
+
+				for (int iz = 0; iz < depth; iz++) t.Push(new Tile(parent, (short)0, false));
+				Tiles[id] = t;
 				Tiles[id].x = ix * 32;
 				Tiles[id++].y = iy * 16;
 			}
 		}
 	}
 
-	public MapIsometric(Space space, int tileWidth, int tileHeight, int width, int height)
+	public MapIsometric(Space space, int tileWidth, int tileHeight, int width, int height, int depth)
 	{
-		this(space, width, height);
+		this(space, width, height, depth);
 		TileWidth = tileWidth;
 		TileHeight = tileHeight;
 
@@ -99,8 +102,8 @@ public class MapIsometric
 			{
 				t = t.next;
 				t.Serialize(bb);
-			}
 		}
+	}
 	}
 
 	public void generate()

@@ -35,9 +35,9 @@ public class Area extends Space
 	/** Width of each individual tile used for scaling the map. */
 	private int m_tw = 64;
 
-	/// <summary>
-	/// Height of each individual tile used for scaling the map.
-	/// </summary>
+	/**
+	 * Height of each individual tile used for scaling the map.
+	 */
 	private int m_th = 64;
 
 	public boolean Server = false;
@@ -48,7 +48,7 @@ public class Area extends Space
 
 	//Objects
 	private Calendar m_deltaTime;
-	//private float m_delta;
+	private float m_delta;
 
 	public static int XTO;
 	public static int YTO;
@@ -74,10 +74,10 @@ public class Area extends Space
 	 * @param wt Width of area in tiles.
 	 * @param ht Height of area in tiles.
 	 */
-	public Area(int wt, int ht) throws IOException
+	public Area(int wt, int ht, int zt) throws IOException
 	{
 		this();
-		Map = new MapIsometric(this, 64, 64, wt, ht);
+		Map = new MapIsometric(this, m_tw, m_th, wt, ht, zt);
 		Map.generate();
 		Server = true;
 	}
@@ -95,8 +95,8 @@ public class Area extends Space
 
 	public void Update(int offx, int offy)
 	{
-		//m_delta = (Calendar.getInstance().getTimeInMillis() -
-		//	m_deltaTime.getTimeInMillis()) / 1000;
+		m_delta = (Calendar.getInstance().getTimeInMillis() -
+			m_deltaTime.getTimeInMillis()) / 1000;
 		for (int ix = Objects.size() - 1; ix > -1; ix--)
 		{
 			Entity e = Objects.get(ix);
